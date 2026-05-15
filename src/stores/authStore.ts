@@ -1,10 +1,12 @@
-import { loginAPI, logoutAPI } from '@/api/auth'
+import { loginAPI, logoutAPI, getMeAPI } from '@/api/auth'
 import { defineStore } from 'pinia'
 import type { login } from '@/typings/auth'
 import { ref } from 'vue'
+import type { userDTO } from '@/typings/user'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
+  const user = ref<userDTO | null>()
 
   const setAccessToken = (token: string) => {
     accessToken.value = token
@@ -12,11 +14,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   const login = async (credencials: login) => {
     const user = await loginAPI(credencials)
-    console.log(user)
     if (user.token) {
       setAccessToken(user.token)
       localStorage.setItem('accessToken', user.token)
     }
+  }
+
+  const getMe = async () => {
+    const res = await getMeAPI()
+    user.value = res
+    console.log(user)
   }
 
   const logout = async () => {
@@ -24,5 +31,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('accessToken', '')
   }
 
-  return { login, logout }
+  return { login, logout, getMe, user }
 })

@@ -28,6 +28,6 @@ export interface ApartmentDTO {
   occupancyType: string
   rent: number
   lastGasMetric: number
-  buildingId: number
-  userId: string
+  building?: { id: number; name }
+  user?: { id: string; name: string; lastname: string }
 }

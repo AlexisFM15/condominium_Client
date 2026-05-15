@@ -3,6 +3,7 @@ import axios, { type InternalAxiosRequestConfig } from 'axios'
 export const Endpoints = {
   Users: '/users',
   login: '/login',
+  me: '/me',
   logout: '/logout',
   apartments: '/apartments',
   areas: '/areas',
@@ -16,6 +17,7 @@ export const Endpoints = {
   scheduleAreas: '/schedule_areas',
   services: '/services',
   votes: '/votes',
+  dashboard: '/dashboard',
 }
 
 export const api = axios.create({
@@ -37,12 +39,14 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-
-    console.log(originalRequest, 'asa')
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
-        const res = await api.post('/refreshToken', {}, { withCredentials: true })
+        const res = await axios.post(
+          'http://localhost:3200/refreshToken',
+          {},
+          { withCredentials: true },
+        )
         console.log(res)
         localStorage.setItem('accessToken', res.data.accessToken)
 

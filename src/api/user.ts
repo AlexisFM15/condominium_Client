@@ -25,3 +25,8 @@ export const updateUserAPI = async (data: updateUserDTO) => {
   const res = await api.patch(`${Endpoints.Users}/${data.id}`, data)
   return res.data
 }
+
+export const getDashboardAPI = async () => {
+  const res = await api.get(Endpoints.dashboard)
+  return res.data
+}

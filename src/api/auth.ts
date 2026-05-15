@@ -10,3 +10,7 @@ export const loginAPI = async (data: login) => {
 export const logoutAPI = async () => {
   await api.post(Endpoints.logout, {})
 }
+
+export const getMeAPI = async () => {
+  await api.get(Endpoints.me)
+}
