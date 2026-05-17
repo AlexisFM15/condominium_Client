@@ -4,15 +4,6 @@ import CrudTable from '@/components/crudTable.vue'
 import { useApartmentStore } from '@/stores/aparmentStore'
 import type { ApartmentDTO } from '@/typings/apartment'
 
-// {
-//   number: string,
-//     occupancyType: string,
-//       rent: number,
-//         lastGasMetric: number,
-//           buildingId: number,
-//             userId: string
-// }
-
 const useAparmet = useApartmentStore()
 
 console.log(useAparmet.Apartments)
@@ -32,8 +23,8 @@ const create = async (item: any) => {
   await useAparmet.createApartmentS(item)
 }
 
-const update = (item: any) => {
-
+const update = async (item: any) => {
+  await useAparmet.updateApartment(item)
 }
 
 const remove = (item: any) => {

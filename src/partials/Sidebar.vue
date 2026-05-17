@@ -132,7 +132,7 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
             <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
               ? 'text-violet-500'
               : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Reservar área común
+              Incidencias
             </div>
           </router-link>
 
@@ -198,7 +198,7 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
         </div>
       </div>
 
-      <!-- DASHBOARD -->
+      <!-- DASHBOARD Admin -->
       <div>
         <button @click="toggleDashboardADM"
           class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
@@ -226,34 +226,41 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
             <div class="text-sm cursor-pointer" :class="route.fullPath === '/'
               ? 'text-violet-500'
               : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Votaciones
+              Votación
             </div>
           </router-link>
 
-          <router-link to="/dashboard/draftbill">
+          <router-link to="/dashboard/admin/apartment">
             <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
               ? 'text-violet-500'
               : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Borrador factura
+              Apartamento
             </div>
           </router-link>
 
-          <router-link to="/dashboard/createpoll">
+          <router-link to="/dashboard/admin/area">
             <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
               ? 'text-violet-500'
               : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Crear votación
+              Area
             </div>
           </router-link>
 
-          <router-link to="/dashboard/closepoll">
+          <router-link to="/dashboard/admin/bill">
             <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
               ? 'text-violet-500'
               : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Cerrar votación
+              Factura
             </div>
           </router-link>
 
+          <router-link to="/dashboard/admin/building">
+            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
+              ? 'text-violet-500'
+              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+              Edificio
+            </div>
+          </router-link>
         </div>
       </div>
     </nav>

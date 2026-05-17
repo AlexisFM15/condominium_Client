@@ -83,7 +83,7 @@ const openCreate = () => {
 }
 
 const openEdit = (item: any) => {
-  selectedItem.value = structuredClone(item)
+  selectedItem.value = { ...item }
   isEditing.value = true
   showModal.value = true
 }

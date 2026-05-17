@@ -23,6 +23,7 @@ import AreaView from '@/views/admin/AreaView.vue'
 import BillView from '@/views/admin/billView.vue'
 import BuildingView from '@/views/admin/buildingView.vue'
 import { setupAuthGuard } from './guard/auth'
+import BalanceView from '@/views/admin/balanceView.vue'
 // import '../router/guard/auth'
 
 const routes = [
@@ -86,6 +87,10 @@ const routes = [
       {
         path: '/dashboard/admin/building',
         component: BuildingView,
+      },
+      {
+        path: '/dashboard/admin/balance',
+        component: BalanceView,
       },
       {
         path: 'dashboard/analytics',

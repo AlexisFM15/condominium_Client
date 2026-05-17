@@ -6,7 +6,7 @@ import type { userDTO } from '@/typings/user'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
-  const user = ref<userDTO | null>()
+  const user = ref<userDTO | null>(null)
 
   const setAccessToken = (token: string) => {
     accessToken.value = token

@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ReservationModal from './ReservationModal.vue'
+import type { ScheduleAreaDTO } from '@/typings/scheduleArea';
+import { useScheduleAreaStore } from '@/stores/scheduleAreaStore';
 
-type Reservation = {
-  reservation_date: string
-  area_id: string
-  start_time?: string
-  end_time?: string
-}
+
+const useReservations = useScheduleAreaStore()
 
 const props = defineProps<{
-  reservations: Reservation[]
-  selectedArea: string
+  reservations: ScheduleAreaDTO[]
+  selectedArea: number
+  user: string
 }>()
 
 const emit = defineEmits(['select-date'])
@@ -22,27 +21,34 @@ const current = ref(new Date(today.getFullYear(), today.getMonth(), 1))
 const modalOpen = ref(false)
 const selectedDay = ref<any>(null)
 
-// 🔥 estado LOCAL (esto es CLAVE)
-const localReservations = ref<Reservation[]>([...props.reservations])
-
 // 🔥 filtrar por área
-const filtered = computed(() =>
-  localReservations.value.filter(r => r.area_id === props.selectedArea)
-)
+const filtered = computed(() => {
+  return props.reservations.filter(r => {
+    return Number(r.area?.id) === Number(props.selectedArea)
+  })
+})
 
 // 🔥 mapa por fecha
 const reservationMap = computed(() => {
-  const map: Record<string, Reservation[]> = {}
+  const map: Record<string, ScheduleAreaDTO[]> = {}
 
   filtered.value.forEach(r => {
-    if (!map[r.reservation_date]) map[r.reservation_date] = []
-    map[r.reservation_date].push(r)
+    if (!r.reservation_date) return
+
+    const key = r.reservation_date.split('T')[0]
+
+    if (!map[key]) {
+      map[key] = []
+    }
+
+    map[key].push(r)
   })
 
   return map
 })
 
-// 🔥 generar días
+
+// generate days
 const days = computed(() => {
   const start = new Date(current.value)
   const startDay = start.getDay()
@@ -54,7 +60,12 @@ const days = computed(() => {
     const d = new Date(startDate)
     d.setDate(startDate.getDate() + i)
 
-    const dateStr = d.toISOString().split('T')[0]
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+
+    const dateStr = `${year}-${month}-${day}`
+
     const reservations = reservationMap.value[dateStr] || []
 
     return {
@@ -73,32 +84,40 @@ const days = computed(() => {
   })
 })
 
-// navegación
+// nav
 const prevMonth = () =>
   current.value = new Date(current.value.getFullYear(), current.value.getMonth() - 1, 1)
 
 const nextMonth = () =>
   current.value = new Date(current.value.getFullYear(), current.value.getMonth() + 1, 1)
 
-// 🔥 abrir modal (CORRECTO)
+// Open Modal
 const openModal = (day: any) => {
-  if (day.status === 'full') return
+  if (day.status === 'parcial') return
 
   selectedDay.value = day
   modalOpen.value = true
 }
 
-// 🔥 guardar reserva (REACTIVO REAL)
+// add seconds to save in db
+const addSeconds = (time: string) => {
+  return time.length === 5 ? `${time}:00` : time
+}
+// save reservation
 const addReservation = (data: any) => {
   const dateStr = selectedDay.value.date.toISOString().split('T')[0]
 
-  localReservations.value.push({
-    reservation_date: dateStr,
-    area_id: props.selectedArea,
-    start_time: data.start_time,
-    end_time: data.end_time
-  })
 
+  const newReservations = {
+    reservation_date: dateStr,
+    areaId: props.selectedArea,
+    start_time: addSeconds(data.start_time),
+    end_time: addSeconds(data.end_time),
+    status: 'Pendiente',
+    userId: props.user
+  }
+  useReservations.createScheduleAreaS(newReservations)
+  useReservations.fetchScheduleArea()
   modalOpen.value = false
 }
 
@@ -106,6 +125,8 @@ const addReservation = (data: any) => {
 const monthLabel = computed(() =>
   current.value.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
 )
+
+
 </script>
 
 <template>
@@ -133,7 +154,7 @@ const monthLabel = computed(() =>
         :class="[
           day.currentMonth ? '' : 'opacity-30',
           day.status === 'free' ? 'bg-green-50 hover:bg-green-100' : '',
-          day.status === 'partial' ? 'bg-yellow-50 hover:bg-yellow-100' : '',
+          day.status === 'partial' ? 'bg-red-100 cursor-not-allowed' : '',
           day.status === 'full' ? 'bg-red-100 cursor-not-allowed' : '',
           day.isToday ? 'border border-violet-400' : ''
         ]">
@@ -151,7 +172,7 @@ const monthLabel = computed(() =>
           class="absolute z-10 hidden group-hover:block bottom-full mb-2 w-32 text-xs bg-black text-white p-2 rounded shadow">
           <div v-if="day.status === 'free'">Disponible</div>
           <div v-if="day.status === 'partial'">
-            {{ day.reservations.length }} reservas
+            No disponible
           </div>
           <div v-if="day.status === 'full'">No disponible</div>
         </div>

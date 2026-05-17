@@ -12,5 +12,6 @@ export const logoutAPI = async () => {
 }
 
 export const getMeAPI = async () => {
-  await api.get(Endpoints.me)
+  const res = await api.get(Endpoints.me)
+  return res.data
 }

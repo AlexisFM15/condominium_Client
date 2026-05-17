@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
-import { L } from 'vue-router/dist/index-BzEKChPW.js'
 
 const data = ref([
   {

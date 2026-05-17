@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Calendar from '@/components/ReservationCalendar.vue'
+import { useAreaStore } from '@/stores/areaStore'
+import { useScheduleAreaStore } from '@/stores/scheduleAreaStore'
+import { useAuthStore } from '@/stores/authStore'
 
-const selectedArea = ref('pool')
+const selectedArea = ref()
+const useArea = useAreaStore()
+const useReservations = useScheduleAreaStore()
+const user = useAuthStore()
 
-const areas = [
-  { id: 'pool', name: 'Piscina' },
-  { id: 'bbq', name: 'BBQ' },
-  { id: 'salon', name: 'Salón' },
-  { id: 'garden', name: 'garden' }
-]
+computed(() => useAuthStore().user)
+console.log(user.user.user?.id)
 
-const reservations = [
-  { reservation_date: '2026-05-10', area_id: 'pool' },
-  { reservation_date: '2026-05-10', area_id: 'pool' },
-  { reservation_date: '2026-05-15', area_id: 'bbq' }
-]
+onMounted(async () => {
+  await useArea.fetchArea()
+  await useReservations.fetchScheduleArea()
+})
 </script>
 
 <template>
@@ -23,14 +24,14 @@ const reservations = [
 
     <!-- selector de área -->
     <div class="flex gap-2">
-      <button v-for="a in areas" :key="a.id" @click="selectedArea = a.id" class="px-3 py-1 rounded bg-gray-200"
+      <button v-for="a in useArea.Areas" :key="a.id" @click="selectedArea = a.id" class="px-3 py-1 rounded bg-gray-200"
         :class="selectedArea === a.id ? 'bg-violet-500 text-white' : ''">
         {{ a.name }}
       </button>
     </div>
 
     <!-- calendario -->
-    <Calendar :reservations="reservations" :selectedArea="selectedArea" />
+    <Calendar :reservations="useReservations.ScheduleAreas" :selectedArea="selectedArea" :user="user.user.user?.id" />
 
   </div>
 </template>
