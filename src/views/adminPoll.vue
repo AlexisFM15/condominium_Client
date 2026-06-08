@@ -31,5 +31,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <CrudTable :data="data" :columns="columns" @create="create" @update="update" @delete="remove" />
+  <CrudTable
+    :data="usePoll.Polls"
+    :columns="columns"
+    @create="create"
+    @update="update"
+    @delete="remove"
+  />
 </template>

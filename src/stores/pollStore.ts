@@ -34,6 +34,7 @@ export const usePollStore = defineStore('poll', () => {
 
   const fetchOpenPoll = async () => {
     Polls.value = await getOpenPollAPI()
+    console.log(Polls)
   }
   return { Polls, fetchPoll, getOne, createPollS, updatePoll, deletePoll, fetchOpenPoll }
 })
