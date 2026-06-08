@@ -17,7 +17,6 @@ const dashboardOpenOP = ref(false)
 
 const dashboardOpenADM = ref(false)
 
-
 // 🔥 persistencia
 onMounted(() => {
   const savedCollapsed = localStorage.getItem('sidebar-collapsed')
@@ -46,7 +45,10 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
 
 <template>
   <!-- 🔥 BOTÓN GLOBAL (SIEMPRE visible) -->
-  <button class="fixed top-4 left-4 z-[9999] bg-white p-2 rounded shadow lg:hidden" @click="toggleSidebar">
+  <button
+    class="fixed top-4 left-4 z-[9999] bg-white p-2 rounded shadow lg:hidden"
+    @click="toggleSidebar"
+  >
     ☰
   </button>
 
@@ -64,201 +66,373 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
       sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
 
       // tamaño
-      sidebarCollapsed ? 'w-20' : 'w-64'
-    ]">
+      sidebarCollapsed ? 'w-20' : 'w-64',
+    ]"
+  >
     <!-- HEADER -->
     <div class="flex items-center justify-between p-4">
-      <span v-if="!sidebarCollapsed" class="font-bold text-gray-800 dark:text-white">
-        Admin
-      </span>
-
-      <button @click="toggleCollapse" class="text-gray-500 hover:text-gray-800">
-        ☰
-      </button>
+      <button @click="toggleCollapse" class="text-gray-500 hover:text-gray-800">☰</button>
     </div>
 
     <!-- NAV -->
     <nav class="flex-1 px-2 overflow-auto">
-
       <!-- DASHBOARD -->
       <div>
-        <button @click="toggleDashboard"
-          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        <button
+          @click="toggleDashboard"
+          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+        >
           <div class="flex items-center gap-3">
-            <svg class="w-5 h-5" :class="route.fullPath.includes('dashboard') ? 'text-violet-500' : 'text-gray-400'"
-              fill="currentColor" viewBox="0 0 16 16">
+            <svg
+              class="w-5 h-5"
+              :class="route.fullPath.includes('dashboard') ? 'text-blue-600' : 'text-gray-400'"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
               <path d="M8 0a8 8 0 100 16A8 8 0 008 0z" />
             </svg>
 
-            <span v-if="!sidebarCollapsed" class="text-sm font-medium">
-              Menú
-            </span>
+            <span v-if="!sidebarCollapsed" class="text-sm font-medium"> Menú </span>
           </div>
 
-          <svg v-if="!sidebarCollapsed" class="w-3 h-3 transition-transform" :class="dashboardOpen ? 'rotate-180' : ''"
-            fill="currentColor" viewBox="0 0 12 12">
+          <svg
+            v-if="!sidebarCollapsed"
+            class="w-3 h-3 transition-transform"
+            :class="dashboardOpen ? 'rotate-180' : ''"
+            fill="currentColor"
+            viewBox="0 0 12 12"
+          >
             <path d="M6 9L1 4h10L6 9z" />
           </svg>
         </button>
 
         <!-- submenu -->
-        <div v-show="dashboardOpen && !sidebarCollapsed" class="ml-8 ">
-
+        <div v-show="dashboardOpen && !sidebarCollapsed" class="ml-8">
           <router-link to="/">
-            <div class="text-sm cursor-pointer" :class="route.fullPath === '/'
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Inicio
             </div>
           </router-link>
 
           <router-link to="/dashboard/reservation">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Reservar área común
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Reservaciones
             </div>
           </router-link>
 
           <router-link to="/dashboard/poll">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('fintech')
-              ? 'text-violet-500'
-              : '  dark:hover:text-gray-200'">
-              Votaciones
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Encuestas
             </div>
           </router-link>
 
-          <router-link to="/dashboard/reservation">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Incidencias
+          <router-link to="/dashboard/ssssssa">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Reportar Incidencias
             </div>
           </router-link>
-
         </div>
       </div>
 
       <!-- DASHBOARD -->
       <div>
-        <button @click="toggleDashboardOP"
-          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        <button
+          @click="toggleDashboardOP"
+          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+        >
           <div class="flex items-center gap-3">
-            <svg class="w-5 h-5" :class="route.fullPath.includes('dashboard') ? 'text-violet-500' : 'text-gray-400'"
-              fill="currentColor" viewBox="0 0 16 16">
+            <svg
+              class="w-5 h-5"
+              :class="route.fullPath.includes('dashboard') ? 'text-blue-600' : 'text-gray-400'"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
               <path d="M8 0a8 8 0 100 16A8 8 0 008 0z" />
             </svg>
 
-            <span v-if="!sidebarCollapsed" class="text-sm font-medium">
-              Menú OP
-            </span>
+            <span v-if="!sidebarCollapsed" class="text-sm font-medium"> Menú OP </span>
           </div>
 
-          <svg v-if="!sidebarCollapsed" class="w-3 h-3 transition-transform"
-            :class="dashboardOpenOP ? 'rotate-180' : ''" fill="currentColor" viewBox="0 0 12 12">
+          <svg
+            v-if="!sidebarCollapsed"
+            class="w-3 h-3 transition-transform"
+            :class="dashboardOpenOP ? 'rotate-180' : ''"
+            fill="currentColor"
+            viewBox="0 0 12 12"
+          >
             <path d="M6 9L1 4h10L6 9z" />
           </svg>
         </button>
 
         <!-- submenu -->
-        <div v-show="dashboardOpenOP && !sidebarCollapsed" class="ml-8 ">
-
+        <div v-show="dashboardOpenOP && !sidebarCollapsed" class="ml-8">
           <router-link to="/dashboard/paybill">
-            <div class="text-sm cursor-pointer" :class="route.fullPath === '/'
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Pagar factura
             </div>
           </router-link>
 
           <router-link to="/dashboard/draftbill">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Borrador factura
             </div>
           </router-link>
 
           <router-link to="/dashboard/createpoll">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Crear votación
             </div>
           </router-link>
 
           <router-link to="/dashboard/closepoll">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Cerrar votación
             </div>
           </router-link>
-
         </div>
       </div>
 
       <!-- DASHBOARD Admin -->
       <div>
-        <button @click="toggleDashboardADM"
-          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        <button
+          @click="toggleDashboardADM"
+          class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+        >
           <div class="flex items-center gap-3">
-            <svg class="w-5 h-5" :class="route.fullPath.includes('admin') ? 'text-violet-500' : 'text-gray-400'"
-              fill="currentColor" viewBox="0 0 16 16">
+            <svg
+              class="w-5 h-5"
+              :class="route.fullPath.includes('admin') ? 'text-blue-600' : 'text-gray-400'"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
               <path d="M8 0a8 8 0 100 16A8 8 0 008 0z" />
             </svg>
 
-            <span v-if="!sidebarCollapsed" class="text-sm font-medium">
-              Menú ADM
-            </span>
+            <span v-if="!sidebarCollapsed" class="text-sm font-medium"> Menú ADM </span>
           </div>
 
-          <svg v-if="!sidebarCollapsed" class="w-3 h-3 transition-transform"
-            :class="dashboardOpenADM ? 'rotate-180' : ''" fill="currentColor" viewBox="0 0 12 12">
+          <svg
+            v-if="!sidebarCollapsed"
+            class="w-3 h-3 transition-transform"
+            :class="dashboardOpenADM ? 'rotate-180' : ''"
+            fill="currentColor"
+            viewBox="0 0 12 12"
+          >
             <path d="M6 9L1 4h10L6 9z" />
           </svg>
         </button>
 
         <!-- submenu -->
-        <div v-show="dashboardOpenADM && !sidebarCollapsed" class="ml-8 ">
-
-          <router-link to="/dashboard/admin/poll">
-            <div class="text-sm cursor-pointer" :class="route.fullPath === '/'
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
-              Votación
-            </div>
-          </router-link>
-
+        <div v-show="dashboardOpenADM && !sidebarCollapsed" class="ml-8">
           <router-link to="/dashboard/admin/apartment">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Apartamento
             </div>
           </router-link>
 
           <router-link to="/dashboard/admin/area">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Area
             </div>
           </router-link>
 
           <router-link to="/dashboard/admin/bill">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Factura
             </div>
           </router-link>
 
           <router-link to="/dashboard/admin/building">
-            <div class="text-sm cursor-pointer" :class="route.fullPath.includes('analytics')
-              ? 'text-violet-500'
-              : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('analytics')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
               Edificio
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/balance">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Balance
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/condominium">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Condominios
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/payment">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              pagos
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/reservation">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Reservaciones
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/service">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Servicios
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/user">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Usuarios
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/poll">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Votación
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/vote">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath === '/'
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Votos
             </div>
           </router-link>
         </div>

@@ -1,34 +1,33 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
-import { useAreaStore } from '@/stores/areaStore'
-import type { AreaDTO } from '@/typings/area'
+import { useServiceStore } from '@/stores/serviceStore'
+import type { ServiceDTO } from '@/typings/service'
 
-const useArea = useAreaStore()
-const data = ref<AreaDTO[]>([])
+const useService = useServiceStore()
+const data = ref<ServiceDTO[]>([])
 
 console.log(data)
 const columns = [
-  { key: 'name', label: 'Área' },
+  { key: 'name', label: 'Servicio' },
   { key: 'description', label: 'Descripción' },
-  { key: 'condominium.name', label: 'Condominio' },
 ]
 
 const create = async (item: any) => {
-  await useArea.createAreaS(item)
+  await useService.createServiceS(item)
 }
 
 const update = async (item: any) => {
-  await useArea.updateArea(item)
+  await useService.updateService(item)
 }
 
 const remove = async (item: any) => {
-  await useArea.deleteArea(item)
+  await useService.deleteService(item)
 }
 
 onMounted(async () => {
-  await useArea.fetchArea()
-  data.value = useArea.Areas
+  await useService.fetchService()
+  data.value = useService.Services
 })
 </script>
 

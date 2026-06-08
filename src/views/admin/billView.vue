@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
+import { useBillStore } from '@/stores/billStore'
+import type { BillDTO } from '@/typings/bill'
 
-const data = ref([
-  {
-    id: 1,
-    amount: 11,
-    status: 'Pagada',
-    due_date: '10/3/2026',
-    year: 2026,
-    month: 'Marzo',
-    gas_pic: 'https/sladmsdas',
-    apartmentId: 1,
-    gas_metric: 142.02,
-    latefee: 7,
-    lateFeeStatus: true,
-
-  }
-])
+const useBill = useBillStore()
+const data = ref<BillDTO[]>([])
 
 const columns = [
   { key: 'amount', label: 'Monto' },
@@ -27,20 +15,25 @@ const columns = [
   { key: 'month', label: 'Mes' },
   { key: 'latefee', label: 'Mora' },
   { key: 'lateFeeStatus', label: 'mora aplicada' },
+  { key: 'apartment.number', label: 'Apartamento' },
 ]
 
-const create = (item: any) => {
-  data.value.push({ ...item, id: Date.now() })
+const create = async (item: any) => {
+  await useBill.createBillS(item)
 }
 
-const update = (item: any) => {
-  const i = data.value.findIndex(d => d.id === item.id)
-  data.value[i] = item
+const update = async (item: any) => {
+  await useBill.updateBill(item)
 }
 
-const remove = (item: any) => {
-  data.value = data.value.filter(d => d.id !== item.id)
+const remove = async (item: any) => {
+  await useBill.deleteBill(item)
 }
+
+onMounted(async () => {
+  await useBill.fetchBill()
+  data.value = useBill.Bills
+})
 </script>
 
 <template>

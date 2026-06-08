@@ -24,6 +24,12 @@ import BillView from '@/views/admin/billView.vue'
 import BuildingView from '@/views/admin/buildingView.vue'
 import { setupAuthGuard } from './guard/auth'
 import BalanceView from '@/views/admin/balanceView.vue'
+import CondominiumView from '@/views/admin/condominiumView.vue'
+import PaymentAdminView from '@/views/admin/paymentView.vue'
+import ReservationAdminView from '@/views/admin/reservationView.vue'
+import ServiceView from '@/views/admin/serviceView.vue'
+import UserView from '@/views/admin/userView.vue'
+import VoteView from '@/views/admin/voteView.vue'
 // import '../router/guard/auth'
 
 const routes = [
@@ -91,6 +97,30 @@ const routes = [
       {
         path: '/dashboard/admin/balance',
         component: BalanceView,
+      },
+      {
+        path: '/dashboard/admin/condominium',
+        component: CondominiumView,
+      },
+      {
+        path: '/dashboard/admin/payment',
+        component: PaymentAdminView,
+      },
+      {
+        path: '/dashboard/admin/reservation',
+        component: ReservationAdminView,
+      },
+      {
+        path: '/dashboard/admin/service',
+        component: ServiceView,
+      },
+      {
+        path: '/dashboard/admin/user',
+        component: UserView,
+      },
+      {
+        path: '/dashboard/admin/vote',
+        component: VoteView,
       },
       {
         path: 'dashboard/analytics',

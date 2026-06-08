@@ -1,36 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
+import { useBuildingStore } from '@/stores/buildingStore'
+import type { BuildingDTO } from '@/typings/building'
 
-const data = ref([
-  {
-    id: 11,
-    name: 'Edificio 02',
-    description: '24 metros, 5 pisos',
-    serviceCost: 200,
-    condominiumId: 1
-  }
-])
+const useBuilding = useBuildingStore()
+const data = ref<BuildingDTO[]>([])
 
 const columns = [
   { key: 'name', label: 'Edificio' },
   { key: 'description', label: 'Descripción' },
   { key: 'serviceCost', label: 'Costo Servicio' },
-  { key: 'condominiumId', label: 'Condominio' },
+  { key: 'condominium.name', label: 'Condominio' },
 ]
 
-const create = (item: any) => {
-  data.value.push({ ...item, id: Date.now() })
+const create = async (item: any) => {
+  await useBuilding.createBuildingS(item)
 }
 
-const update = (item: any) => {
-  const i = data.value.findIndex(d => d.id === item.id)
-  data.value[i] = item
+const update = async (item: any) => {
+  await useBuilding.updateBuilding(item)
 }
 
-const remove = (item: any) => {
-  data.value = data.value.filter(d => d.id !== item.id)
+const remove = async (item: any) => {
+  await useBuilding.deleteBuilding(item)
 }
+
+onMounted(async () => {
+  await useBuilding.fetchBuilding()
+  data.value = useBuilding.Buildings
+})
 </script>
 
 <template>

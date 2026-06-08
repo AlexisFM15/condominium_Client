@@ -1,4 +1,11 @@
-import { getPollsAPI, getPollAPI, createPollAPI, updatePollAPI, deletePollAPI } from '@/api/poll'
+import {
+  getPollsAPI,
+  getPollAPI,
+  createPollAPI,
+  updatePollAPI,
+  deletePollAPI,
+  getOpenPollAPI,
+} from '@/api/poll'
 import type { createPollDTO, idPollDTO, updatePollDTO } from '@/typings/poll'
 import { ref } from 'vue'
 
@@ -40,11 +47,19 @@ export function usePoll() {
     return res
   }
 
+  const getOpenPoll = async () => {
+    loading.value = true
+    const res = await getOpenPollAPI()
+    loading.value = false
+    return res
+  }
+
   return {
     getPollss,
     getOnePoll,
     createPoll,
     updatePolls,
     deletePolls,
+    getOpenPoll,
   }
 }

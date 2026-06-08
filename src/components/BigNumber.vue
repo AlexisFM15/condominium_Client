@@ -7,8 +7,9 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl p-4 h-full flex flex-col justify-between shadow-sm">
-
+  <div
+    class="bg-white dark:bg-gray-800 rounded-xl p-4 h-full flex flex-col justify-between shadow-sm"
+  >
     <!-- LABEL -->
     <p class="text-xs text-gray-500">
       {{ label }}
@@ -25,6 +26,5 @@ const props = defineProps<{
     <p v-if="subtext" class="text-xs text-center text-gray-400">
       {{ subtext }}
     </p>
-
   </div>
 </template>

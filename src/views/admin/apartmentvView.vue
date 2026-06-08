@@ -10,13 +10,12 @@ console.log(useAparmet.Apartments)
 
 const realData = ref<ApartmentDTO[]>([])
 
-
 const columns = [
   { key: 'number', label: 'No.Apartamento' },
   { key: 'occupancyType', label: 'Tipo' },
   { key: 'lastGasMetric', label: 'Ultima lectura' },
   { key: `building.name`, label: 'No.Edificio' },
-  { key: 'user.name', label: 'Usuario' }
+  { key: 'user.name', label: 'Usuario' },
 ]
 
 const create = async (item: any) => {
@@ -27,8 +26,8 @@ const update = async (item: any) => {
   await useAparmet.updateApartment(item)
 }
 
-const remove = (item: any) => {
-  data.value = data.value.filter(d => d.id !== item.id)
+const remove = async (item: any) => {
+  await useAparmet.deleteApartment(item)
 }
 
 onMounted(async () => {
@@ -38,5 +37,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <CrudTable :data="realData" :columns="columns" @create="create" @update="update" @delete="remove" />
+  <CrudTable
+    :data="realData"
+    :columns="columns"
+    @create="create"
+    @update="update"
+    @delete="remove"
+  />
 </template>

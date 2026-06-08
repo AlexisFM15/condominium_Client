@@ -7,17 +7,19 @@ import type { userDTO } from '@/typings/user'
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
   const user = ref<userDTO | null>(null)
+  const message = ref<string>('')
 
   const setAccessToken = (token: string) => {
     accessToken.value = token
   }
 
   const login = async (credencials: login) => {
-    const user = await loginAPI(credencials)
-    if (user.token) {
-      setAccessToken(user.token)
-      localStorage.setItem('accessToken', user.token)
+    const res = await loginAPI(credencials)
+    if (res.data.data) {
+      setAccessToken(res.data.data.token)
+      localStorage.setItem('accessToken', res.data.data.token)
     }
+    message.value = res.data.message
   }
 
   const getMe = async () => {
@@ -27,9 +29,15 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const logout = async () => {
-    await logoutAPI()
-    localStorage.setItem('accessToken', '')
+    try {
+      await logoutAPI()
+      localStorage.removeItem('accessToken')
+      accessToken.value = null
+      user.value = null
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  return { login, logout, getMe, user }
+  return { login, logout, getMe, user, message }
 })
