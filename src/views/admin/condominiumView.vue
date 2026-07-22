@@ -9,11 +9,34 @@ const data = ref<CondominiumDTO[]>([])
 
 console.log(data)
 const columns = [
-  { key: 'name', label: 'Condominio' },
-  { key: 'description', label: 'Descripción' },
-  { key: 'latefee_amount', label: 'Tasa Mora' },
-  { key: 'time_limit_days', label: 'Plazo Pago' },
-  { key: 'invoicesDate', label: 'Dia Factura' },
+  {
+    key: 'name',
+    label: 'Condominio',
+  },
+  {
+    key: 'description',
+    label: 'Descripción',
+  },
+  {
+    key: 'latefee_amount',
+    label: 'Tasa Mora',
+    type: 'number',
+  },
+  {
+    key: 'time_limit_days',
+    label: 'Plazo de Pago',
+    type: 'number',
+  },
+  {
+    key: 'promo',
+    label: 'Promo',
+    type: 'number',
+  },
+  {
+    key: 'invoicesDate',
+    label: 'Día de Factura',
+    type: 'number',
+  },
 ]
 
 const create = async (item: any) => {

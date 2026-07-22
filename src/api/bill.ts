@@ -1,5 +1,6 @@
 import type { createBillDTO, idBillDTO, updateBillDTO } from '@/typings/bill'
 import { api, Endpoints } from './apiClient'
+import type { payBillDTO } from '@/typings/payment'
 
 export const getBillsAPI = async () => {
   const res = await api.get(Endpoints.bills)
@@ -23,5 +24,10 @@ export const deleteBillAPI = async (id: idBillDTO) => {
 
 export const updateBillAPI = async (data: updateBillDTO) => {
   const res = await api.patch(`${Endpoints.bills}/${data.id}`, data)
+  return res.data
+}
+
+export const payBillAPI = async (id: number, data: payBillDTO) => {
+  const res = await api.post(`${Endpoints.bills}/paybill/${id}`, data)
   return res.data
 }

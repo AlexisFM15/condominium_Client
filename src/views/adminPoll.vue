@@ -7,9 +7,44 @@ import { usePollStore } from '@/stores/pollStore'
 const usePoll = usePollStore()
 const data = ref<PollDTO[]>([])
 
+console.log(usePoll.Polls)
 const columns = [
-  { key: 'description', label: 'Descripción' },
-  { key: 'status', label: 'Estado' },
+  {
+    key: 'title',
+    label: 'Título',
+  },
+  {
+    key: 'description',
+    label: 'Descripción',
+  },
+  {
+    key: 'status',
+    label: 'Estado',
+  },
+  {
+    key: 'expires_at',
+    label: 'Expira',
+  },
+  {
+    key: 'votesFor',
+    label: 'A favor',
+    type: 'number',
+  },
+  {
+    key: 'votesAgainst',
+    label: 'En contra',
+    type: 'number',
+  },
+  {
+    key: 'userId',
+    label: 'Usuario',
+    type: 'select',
+    valueType: 'string',
+    endpoint: '/users',
+    valueField: 'id',
+    labelField: 'name',
+    displayField: 'user.name',
+  },
 ]
 
 const create = async (item: any) => {
@@ -27,6 +62,7 @@ const remove = async (item: any) => {
 onMounted(async () => {
   await usePoll.fetchPoll()
   data.value = usePoll.Polls
+  console.log(usePoll.Polls[0])
 })
 </script>
 

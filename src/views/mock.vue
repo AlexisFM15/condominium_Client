@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import PayBillsView from '../views/paybils.vue'
+import { useBillStore } from '@/stores/billStore.ts'
 
+const billsStore = useBillStore()
 const bills = ref([
   {
     id: 1,
@@ -9,7 +11,7 @@ const bills = ref([
     gas_total: 200,
     month: '2026-04',
     apartment: { number: 'A-101' },
-    user: { name: 'Juan Pérez' }
+    user: { name: 'Juan Pérez' },
   },
   {
     id: 2,
@@ -17,7 +19,7 @@ const bills = ref([
     gas_total: 150,
     month: '2026-04',
     apartment: { number: 'B-202' },
-    user: { name: 'María López' }
+    user: { name: 'María López' },
   },
   {
     id: 3,
@@ -25,7 +27,7 @@ const bills = ref([
     gas_total: 100,
     month: '2026-03',
     apartment: { number: 'C-303' },
-    user: { name: 'Carlos Díaz' }
+    user: { name: 'Carlos Díaz' },
   },
   {
     id: 4,
@@ -33,11 +35,14 @@ const bills = ref([
     gas_total: 300,
     month: '2026-02',
     apartment: { number: 'D-404' },
-    user: { name: 'Ana García' }
-  }
+    user: { name: 'Ana García' },
+  },
 ])
+onMounted(async () => {
+  await billsStore.fetchBill()
+})
 </script>
 
 <template>
-  <PayBillsView :bills="bills" />
+  <PayBillsView :bills="billsStore.Bills" />
 </template>

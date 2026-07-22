@@ -9,9 +9,30 @@ const data = ref<VoteDTO[]>([])
 
 console.log(data)
 const columns = [
-  { key: 'vote', label: 'Voto' },
-  { key: 'user.name', label: 'Usuario' },
-  { key: 'poll.id', label: 'Votacion' },
+  {
+    key: 'vote',
+    label: 'Voto',
+  },
+  {
+    key: 'userId',
+    label: 'Usuario',
+    type: 'select',
+    endpoint: '/users',
+    valueField: 'id',
+    labelField: 'name',
+    displayField: 'user.name',
+    valueType: 'string', // UUID
+  },
+  {
+    key: 'pollId',
+    label: 'Votación',
+    type: 'select',
+    endpoint: '/polls',
+    valueField: 'id',
+    labelField: 'title',
+    displayField: 'poll.title',
+    valueType: 'number',
+  },
 ]
 
 const create = async (item: any) => {

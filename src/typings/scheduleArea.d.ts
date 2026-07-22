@@ -28,6 +28,10 @@ export interface ScheduleAreaDTO {
   start_time: string // formato HH:mm
   end_time: string // formato HH:mm
   status: string
-  areaId: number
+  area: {
+    id?: number
+    name: string
+    description: string
+  }
   userId: string
 }

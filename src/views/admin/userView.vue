@@ -9,13 +9,41 @@ const data = ref<userDTO[]>([])
 
 console.log(data)
 const columns = [
-  { key: 'name', label: 'Nombre' },
-  { key: 'lastname', label: 'Apellido' },
-  { key: 'phone', label: 'Telefono' },
-  { key: 'email', label: 'Correo' },
-  { key: 'balance', label: 'balance' },
-  { key: 'role', label: 'Rol' },
-  { key: 'apartment.number', label: 'Apartamento' },
+  {
+    key: 'name',
+    label: 'Nombre',
+  },
+  {
+    key: 'lastname',
+    label: 'Apellido',
+  },
+  {
+    key: 'phone',
+    label: 'Teléfono',
+  },
+  {
+    key: 'email',
+    label: 'Correo',
+  },
+  {
+    key: 'balance',
+    label: 'Balance',
+    type: 'number',
+  },
+  {
+    key: 'role',
+    label: 'Rol',
+  },
+  {
+    key: 'apartmentId',
+    label: 'Apartamento',
+    type: 'select',
+    endpoint: '/apartments',
+    valueField: 'id',
+    labelField: 'number',
+    displayField: 'apartment.number',
+    valueType: 'number', // importante si es number
+  },
 ]
 
 const create = async (item: any) => {

@@ -56,7 +56,7 @@ console.log(useUser.dashboard)
 
         <!-- chart grande -->
         <div class="col-span-16 lg:col-span-8 row-span-3 bg-white rounded-xl p-2">
-          <GasChart></GasChart>
+          <GasChart :bills="useUser.dashboard?.bills"></GasChart>
         </div>
 
         <!-- widget lateral -->

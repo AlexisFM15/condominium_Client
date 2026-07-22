@@ -9,14 +9,42 @@ const data = ref<ScheduleAreaDTO[]>([])
 
 console.log(data)
 const columns = [
-  { key: 'area.name', label: 'Área' },
-  { key: 'reservation_date', label: 'Fecha reserva' },
-  { key: 'start_time', label: 'Inicio' },
-  { key: 'end_time', label: 'Fin' },
-  { key: 'status', label: 'Estado' },
-  { key: 'user.email', label: 'Usuario' },
+  {
+    key: 'areaId',
+    label: 'Área',
+    type: 'select',
+    endpoint: '/areas',
+    valueField: 'id',
+    labelField: 'name',
+    displayField: 'area.name',
+  },
+  {
+    key: 'reservation_date',
+    label: 'Fecha reserva',
+  },
+  {
+    key: 'start_time',
+    label: 'Inicio',
+  },
+  {
+    key: 'end_time',
+    label: 'Fin',
+  },
+  {
+    key: 'status',
+    label: 'Estado',
+  },
+  {
+    key: 'userId',
+    label: 'Usuario',
+    type: 'select',
+    endpoint: '/users',
+    valueField: 'id',
+    labelField: 'email',
+    displayField: 'user.email',
+    valueType: 'string', // si el id del usuario es UUID
+  },
 ]
-
 const create = async (item: any) => {
   await useScheduleArea.createScheduleAreaS(item)
 }

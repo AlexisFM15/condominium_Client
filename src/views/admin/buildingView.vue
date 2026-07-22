@@ -8,10 +8,28 @@ const useBuilding = useBuildingStore()
 const data = ref<BuildingDTO[]>([])
 
 const columns = [
-  { key: 'name', label: 'Edificio' },
-  { key: 'description', label: 'Descripción' },
-  { key: 'serviceCost', label: 'Costo Servicio' },
-  { key: 'condominium.name', label: 'Condominio' },
+  {
+    key: 'name',
+    label: 'Edificio',
+  },
+  {
+    key: 'description',
+    label: 'Descripción',
+  },
+  {
+    key: 'serviceCost',
+    label: 'Costo Servicio',
+    type: 'number',
+  },
+  {
+    key: 'condominiumId',
+    label: 'Condominio',
+    type: 'select',
+    endpoint: '/condominiums',
+    valueField: 'id',
+    labelField: 'name',
+    displayField: 'condominium.name',
+  },
 ]
 
 const create = async (item: any) => {

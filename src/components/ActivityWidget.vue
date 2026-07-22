@@ -115,7 +115,7 @@ const agendas = computed(() => props.agendas)
         >
           <div class="flex flex-col">
             <p class="text-sm text-gray-800 dark:text-gray-100 truncate">
-              {{ item.area.name }}
+              {{ item.area?.name }}
             </p>
 
             <span class="text-xs text-gray-400">

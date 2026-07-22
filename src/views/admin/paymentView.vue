@@ -16,7 +16,6 @@ const columns = [
   { key: 'payment_date', label: 'Fecha' },
   { key: 'paymentType', label: 'Tipo' },
 ]
-
 const create = async (item: any) => {
   await usePayment.createPaymentS(item)
 }

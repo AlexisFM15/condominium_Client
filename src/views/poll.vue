@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
 import { usePollStore } from '@/stores/pollStore'
 import { useVoteStore } from '@/stores/voteStore'
 import type { PollDTO } from '@/typings/poll'
@@ -12,7 +11,6 @@ interface pollVote extends PollDTO {
   userVote: string
 }
 
-console.log(usePoll)
 const vote = (item: pollVote, type: 'A favor' | 'En contra', pollId: number) => {
   if (item.userVote) return // selección única
 

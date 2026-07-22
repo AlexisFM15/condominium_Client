@@ -1,5 +1,13 @@
-import { getBillsAPI, getBillAPI, createBillAPI, updateBillAPI, deleteBillAPI } from '@/api/bill'
+import {
+  getBillsAPI,
+  getBillAPI,
+  createBillAPI,
+  updateBillAPI,
+  deleteBillAPI,
+  payBillAPI,
+} from '@/api/bill'
 import type { createBillDTO, idBillDTO, updateBillDTO } from '@/typings/bill'
+import type { payBillDTO } from '@/typings/payment'
 import { ref } from 'vue'
 
 export function useBill() {
@@ -40,11 +48,19 @@ export function useBill() {
     return res
   }
 
+  const payBillsOn = async (id: number, data: payBillDTO) => {
+    loading.value = true
+    const res = await payBillAPI(id, data)
+    loading.value = false
+    return res
+  }
+
   return {
     getBillss,
     getOneBill,
     createBill,
     updateBills,
     deleteBills,
+    payBillsOn,
   }
 }

@@ -1,37 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import CrudTable from '@/components/crudTable.vue'
-import { useAreaStore } from '@/stores/areaStore'
-import type { AreaDTO } from '@/typings/area'
-
-const useArea = useAreaStore()
-const data = ref<AreaDTO[]>([])
-
-console.log(data)
-const columns = [
-  { key: 'name', label: 'Área' },
-  { key: 'description', label: 'Descripción' },
-  { key: 'condominium.name', label: 'Condominio' },
-]
-
-const create = async (item: any) => {
-  await useArea.createAreaS(item)
-}
-
-const update = async (item: any) => {
-  await useArea.updateArea(item)
-}
-
-const remove = async (item: any) => {
-  await useArea.deleteArea(item)
-}
-
-onMounted(async () => {
-  await useArea.fetchArea()
-  data.value = useArea.Areas
-})
+import AreaCrud from '@/components/cruds/AreaCrud.vue'
 </script>
 
 <template>
-  <CrudTable :data="data" :columns="columns" @create="create" @update="update" @delete="remove" />
+  <AreaCrud />
 </template>
