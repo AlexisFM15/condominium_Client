@@ -18,6 +18,7 @@ export const Endpoints = {
   services: '/services',
   votes: '/votes',
   dashboard: '/dashboard',
+  incidencias: '/incidencias',
 }
 
 export const api = axios.create({

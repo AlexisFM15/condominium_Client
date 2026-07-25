@@ -30,6 +30,8 @@ import ReservationAdminView from '@/views/admin/reservationView.vue'
 import ServiceView from '@/views/admin/serviceView.vue'
 import UserView from '@/views/admin/userView.vue'
 import VoteView from '@/views/admin/voteView.vue'
+import IncidenciaView from '@/views/admin/IncidenciaView.vue'
+import ReportarIncidencia from '@/views/ReportarIncidencia.vue'
 // import '../router/guard/auth'
 
 const routes = [
@@ -122,9 +124,18 @@ const routes = [
         path: '/dashboard/admin/vote',
         component: VoteView,
       },
+       {
+        path: '/dashboard/admin/incidencia',
+        component: IncidenciaView,
+      },
       {
         path: 'dashboard/analytics',
         component: () => import('@/views/analitycs.vue'),
+      },
+
+      {
+        path: '/dashboard/reportar-incidencia',
+        component: ReportarIncidencia,
       },
     ],
   },
