@@ -106,8 +106,6 @@ const save = async () => {
     condominiumId: Number(form.value.condominiumId),
   }
 
-  console.log(payload)
-
   if (isEditing.value && selectedId.value) {
     await areaStore.updateArea({
       id: selectedId.value,

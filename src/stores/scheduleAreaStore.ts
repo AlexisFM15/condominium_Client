@@ -40,6 +40,7 @@ export const useScheduleAreaStore = defineStore('scheduleArea', () => {
 
   const deleteScheduleArea = async (id: idScheduleAreaDTO) => {
     await deleteScheduleAreas(id)
+    fetchScheduleArea()
   }
   return {
     ScheduleAreas,

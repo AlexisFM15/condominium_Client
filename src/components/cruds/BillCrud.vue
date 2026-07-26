@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-import type { BillDTO, createBillDTO } from '@/typings/bill'
+import type { BillDTO } from '@/typings/bill'
 import { useBillStore } from '@/stores/billStore'
 import { useApartmentStore } from '@/stores/aparmentStore'
 
@@ -44,13 +44,12 @@ const form = ref({
   due_date: '',
   year: new Date().getFullYear().toString(),
   month: '',
-  gas_pic: '',
   apartmentId: 0,
   gas_metric: 0,
   latefee: 0,
   lateFeeStatus: false,
 })
-
+const gasPicFile = ref<File | null>(null)
 const bills = computed(() => billStore.Bills)
 const apartments = computed(() => apartmentStore.Apartments)
 
@@ -112,7 +111,6 @@ const openCreate = () => {
     due_date: '',
     year: new Date().getFullYear().toString(),
     month: '',
-    gas_pic: '',
     apartmentId: 0,
     gas_metric: 0,
     latefee: 0,
@@ -142,34 +140,42 @@ const openEdit = (bill: BillDTO) => {
   showModal.value = true
 }
 
+const selectGasPicture = (event: Event) => {
+  const input = event.target as HTMLInputElement
+
+  if (!input.files?.length) return
+
+  gasPicFile.value = input.files[0]
+}
+
 const save = async () => {
-  const payload: createBillDTO = {
-    amount: Number(form.value.amount),
-    status: form.value.status,
-    due_date: new Date(form.value.due_date),
-    year: form.value.year,
-    month: form.value.month,
-    gas_pic: form.value.gas_pic,
-    apartmentId: Number(form.value.apartmentId),
-    gas_metric: Number(form.value.gas_metric),
-    latefee: Number(form.value.latefee),
-    lateFeeStatus: form.value.lateFeeStatus,
+  const formData = new FormData()
+
+  formData.append('amount', form.value.amount.toString())
+  formData.append('status', form.value.status)
+  formData.append('due_date', form.value.due_date)
+  formData.append('year', form.value.year)
+  formData.append('month', form.value.month)
+  formData.append('apartmentId', form.value.apartmentId.toString())
+  formData.append('gas_metric', form.value.gas_metric.toString())
+  formData.append('latefee', form.value.latefee.toString())
+  formData.append('lateFeeStatus', String(form.value.lateFeeStatus))
+
+  if (gasPicFile.value) {
+    formData.append('gas_pic', gasPicFile.value)
   }
+  console.log([...formData.entries()])
 
   if (isEditing.value && selectedId.value) {
-    await billStore.updateBill({
-      id: selectedId.value,
-      ...payload,
-    })
+    await billStore.updateBill(selectedId.value, formData)
   } else {
-    await billStore.createBillS(payload)
+    await billStore.createBillS(formData)
   }
 
   await billStore.fetchBill()
 
   showModal.value = false
 }
-
 const confirmDelete = (id: number) => {
   selectedId.value = id
   showDelete.value = true
@@ -391,9 +397,10 @@ onMounted(async () => {
             <label class="block mb-1 font-medium"> URL Foto Gas </label>
 
             <input
-              v-model="form.gas_pic"
+              type="file"
+              accept="image/*"
+              @change="selectGasPicture"
               class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
-              placeholder="https://..."
             />
           </div>
 
