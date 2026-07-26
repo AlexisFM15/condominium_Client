@@ -27,16 +27,16 @@ export function useBill() {
     return res
   }
 
-  const createBill = async (data: createBillDTO) => {
+  const createBill = async (data: FormData) => {
     loading.value = true
     const res = await createBillAPI(data)
     loading.value = false
     return res
   }
 
-  const updateBills = async (data: updateBillDTO) => {
+  const updateBills = async (id: number, data: FormData) => {
     loading.value = true
-    const res = await updateBillAPI(data)
+    const res = await updateBillAPI(id, data)
     loading.value = false
     return res
   }

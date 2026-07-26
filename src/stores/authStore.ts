@@ -8,17 +8,28 @@ export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
   const user = ref<userDTO | null>(null)
   const message = ref<string>('')
+  const showWelcomeModal = ref(false)
 
   const setAccessToken = (token: string) => {
     accessToken.value = token
   }
 
-  const login = async (credencials: login) => {
-    const res = await loginAPI(credencials)
+  const login = async (credentials: login) => {
+    const res = await loginAPI(credentials)
+
     if (res.data.data) {
-      setAccessToken(res.data.data.token)
-      localStorage.setItem('accessToken', res.data.data.token)
+      const { token, user: userData } = res.data.data
+
+      setAccessToken(token)
+      localStorage.setItem('accessToken', token)
+
+      user.value = userData
+
+      if (userData.defaultPassword) {
+        showWelcomeModal.value = true
+      }
     }
+
     message.value = res.data.message
   }
 
@@ -39,5 +50,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { login, logout, getMe, user, message }
+  return { login, logout, getMe, user, message, showWelcomeModal }
 })

@@ -1,5 +1,5 @@
 import { useBill } from '@/composable/useBill'
-import type { createBillDTO, idBillDTO, updateBillDTO, BillDTO } from '@/typings/bill'
+import type { idBillDTO, BillDTO } from '@/typings/bill'
 import type { payBillDTO } from '@/typings/payment'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -17,15 +17,13 @@ export const useBillStore = defineStore('bill', () => {
     Bills.value = await getOneBill(id)
   }
 
-  const createBillS = async (data: createBillDTO) => {
+  const createBillS = async (data: FormData) => {
     await createBill(data)
-    Bills.value.push({ ...data })
   }
 
-  const updateBill = async (data: updateBillDTO) => {
-    await updateBills(data)
-    Bills.value = Bills.value.filter((Bill) => Bill.id !== data.id)
-    Bills.value.push({ ...data } as BillDTO)
+  const updateBill = async (id: number, data: FormData) => {
+    await updateBills(id, data)
+    await fetchBill()
   }
 
   const deleteBill = async (id: idBillDTO) => {
