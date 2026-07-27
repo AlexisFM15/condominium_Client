@@ -7,6 +7,7 @@ import { ref } from 'vue'
 export const useUserStore = defineStore('user', () => {
   const users = ref<userDTO[]>([])
   const dashboard = ref()
+  const showWelcomeModal = ref(false)
 
   const { getUserss, getOneUser, createUser, updateUsers, deleteUsers } = useUser()
 
@@ -36,8 +37,12 @@ export const useUserStore = defineStore('user', () => {
 
   const getDashboard = async () => {
     dashboard.value = await getDashboardAPI()
-    console.log(dashboard.value)
+
+     if (dashboard.value.user.defaultPassword) {
+        showWelcomeModal.value = true
+      }
+
   }
 
-  return { users, dashboard, fetchUser, getOne, createUserS, updateUser, deleteUser, getDashboard }
+  return { users, dashboard, fetchUser, getOne, createUserS, updateUser, deleteUser, getDashboard, showWelcomeModal }
 })

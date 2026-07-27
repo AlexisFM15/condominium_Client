@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Sidebar from '../partials/Sidebar.vue'
 import Header from '../partials/Header.vue'
-import { useAuthStore } from '@/stores/authStore'
+import { useUserStore } from '@/stores/userStore.ts'
+import welcomeModal from '@/components/welcomeModal.vue'
 
 const sidebarOpen = ref(true)
-const authStore = useAuthStore()
+const userStore = useUserStore()
+
+onMounted(async()=>{
+await userStore.getDashboard()
+})
 </script>
 
 <template>
+
   <div class="flex h-screen w-full">
     <Sidebar :sidebarOpen="sidebarOpen" />
 
@@ -20,6 +26,6 @@ const authStore = useAuthStore()
       </main>
     </div>
 
-    <WelcomeModal v-if="authStore.showWelcomeModal" />
+    <welcomeModal  v-if="userStore.showWelcomeModal" />
   </div>
 </template>

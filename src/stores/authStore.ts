@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
   const user = ref<userDTO | null>(null)
   const message = ref<string>('')
-  const showWelcomeModal = ref(false)
+
 
   const setAccessToken = (token: string) => {
     accessToken.value = token
@@ -23,11 +23,10 @@ export const useAuthStore = defineStore('auth', () => {
       setAccessToken(token)
       localStorage.setItem('accessToken', token)
 
+      console.log(userData)
+
       user.value = userData
 
-      if (userData.defaultPassword) {
-        showWelcomeModal.value = true
-      }
     }
 
     message.value = res.data.message
@@ -50,5 +49,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { login, logout, getMe, user, message, showWelcomeModal }
+  return { login, logout, getMe, user, message }
 })
