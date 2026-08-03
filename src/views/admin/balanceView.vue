@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Monthlybalancedetail from '@/components/monthlybalancedetail.vue'
-import { useMonthlyBalanceStore } from '@/stores/monthlyBalanceStore'
-import { useMovementStore } from '@/stores/movementStore'
 import { computed, onMounted } from 'vue'
+import { useMonthlyBalanceStore } from '../../stores/monthlyBalanceStore'
+import { useMovementStore } from '../../stores/movementStore'
+import Monthlybalancedetail from '../../components/monthlybalancedetail.vue'
 
 const useBalance = useMonthlyBalanceStore()
 const useMovement = useMovementStore()

@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
     const res = await loginAPI(credentials)
 
     if (res.data.data) {
+      console.log(res)
       const { token, user: userData } = res.data.data
 
       setAccessToken(token)
@@ -34,10 +35,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const getMe = async () => {
+  try {
     const res = await getMeAPI()
     user.value = res
-    console.log(user)
+    return res
+  } catch (error) {
+    console.error(error)
+    user.value = null
+    throw error
   }
+}
 
   const logout = async () => {
     try {

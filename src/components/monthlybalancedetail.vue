@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { MonthlyBalanceDTO } from '@/typings/monthlyBalance'
-import type { MovementDTO } from '@/typings/movement';
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   monthlyBalance: MonthlyBalanceDTO[]
@@ -131,6 +129,8 @@ const removeMovement = (id?: number) => {
 }
 
 import { watch } from 'vue'
+import { MovementDTO } from '../typings/movement';
+import { MonthlyBalanceDTO } from '../typings/monthlyBalance';
 
 watch(selectedBalance, (val) => {
   form.value.monthlyBalanceId = val?.id || 0
