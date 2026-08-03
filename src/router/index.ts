@@ -30,6 +30,7 @@ import ReservationAdminView from '@/views/admin/reservationView.vue'
 import ServiceView from '@/views/admin/serviceView.vue'
 import UserView from '@/views/admin/userView.vue'
 import VoteView from '@/views/admin/voteView.vue'
+import FinancialDashboard from '../views/admin/financialDashboard.vue'
 // import '../router/guard/auth'
 
 const routes = [
@@ -96,7 +97,7 @@ const routes = [
       },
       {
         path: '/dashboard/admin/balance',
-        component: BalanceView,
+        component: FinancialDashboard,
       },
       {
         path: '/dashboard/admin/condominium',
