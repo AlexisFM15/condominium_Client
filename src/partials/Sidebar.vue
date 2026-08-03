@@ -147,11 +147,11 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
             </div>
           </router-link>
 
-          <router-link to="/dashboard/ssssssa">
+          <router-link to="/dashboard/reportar-incidencia">
             <div
               class="text-sm cursor-pointer"
               :class="
-                route.fullPath.includes('analytics')
+                route.fullPath.includes('reportar-incidencia')
                   ? 'text-violet-500'
                   : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
               "
@@ -159,6 +159,8 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
               Reportar Incidencias
             </div>
           </router-link>
+
+
         </div>
       </div>
 
@@ -355,6 +357,19 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
               "
             >
               Condominios
+            </div>
+          </router-link>
+
+          <router-link to="/dashboard/admin/incidencia">
+            <div
+              class="text-sm cursor-pointer"
+              :class="
+                route.fullPath.includes('admin/incidencia')
+                  ? 'text-violet-500'
+                  : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+              "
+            >
+              Incidencias
             </div>
           </router-link>
 

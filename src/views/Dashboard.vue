@@ -13,7 +13,7 @@ const incidents = [
     id: 1,
     title: 'Fuga de gas',
     createdAt: '2026-04-24T02:00:00',
-    status: 'open',
+    status: 'open' as const,
   },
 ]
 
