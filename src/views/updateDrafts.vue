@@ -1,123 +1,250 @@
-// UpdateBillsView.vue
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useBillStore } from '@/stores/billStore'
+import type { BillDTO } from '@/typings/bill'
 
-type Bill = {
-  id: number
-  amount: number
-  gas_total: number
-  gas_metric?: number
-  gas_pic?: string
-  apartment: { number: string }
-  user?: { name: string }
-  month: string
-}
+const billStore = useBillStore()
 
-const props = withDefaults(defineProps<{ bills: Bill[] }>(), {
-  bills: () => []
-})
-
-const billsList = ref([...props.bills])
-const selectedBill = ref<Bill | null>(null)
 const loading = ref(false)
+
+const search = ref('')
+const selectedBill = ref<BillDTO | null>(null)
 
 const form = ref({
   gas_metric: 0,
-  gas_pic: null as File | null
 })
 
-const search = ref('')
+const gasPic = ref<File | null>(null)
 
-const filteredBills = computed(() =>
-  billsList.value.filter(b =>
-    b.apartment.number.toLowerCase().includes(search.value.toLowerCase()) ||
-    (b.user?.name || '').toLowerCase().includes(search.value.toLowerCase())
-  )
-)
+const bills = computed(() => billStore.Bills)
 
-const isValid = computed(() =>
-  selectedBill.value && form.value.gas_metric > 0 && form.value.gas_pic
-)
+const filteredBills = computed(() => {
+  if (!search.value) return bills.value
 
-const selectBill = (bill: Bill) => {
+  const text = search.value.toLowerCase()
+
+  return bills.value.filter((bill) => {
+    return (
+      bill.apartment.number.toString().includes(text) ||
+      bill.id?.toString().includes(text)
+    )
+  })
+})
+
+const isValid = computed(() => {
+  return form.value.gas_metric > 0
+})
+
+const selectBill = (bill: BillDTO) => {
   selectedBill.value = bill
+
+  form.value.gas_metric = bill.gas_metric ?? 0
+
+  gasPic.value = null
 }
 
-const handleFile = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  if (target.files && target.files[0]) {
-    form.value.gas_pic = target.files[0]
-  }
+const handleFile = (event: Event) => {
+  const input = event.target as HTMLInputElement
+
+  if (!input.files?.length) return
+
+  gasPic.value = input.files[0]
 }
 
 const submitUpdate = async () => {
-  if (!isValid.value || !selectedBill.value) return
+  if (!selectedBill.value?.id) return
 
   loading.value = true
 
   try {
-    const data = new FormData()
-    data.append('gas_metric', String(form.value.gas_metric))
-    data.append('gas_pic', form.value.gas_pic as File)
+    const formData = new FormData()
 
-    await new Promise(resolve => setTimeout(resolve, 1000)) // mock
+    formData.append('gas_metric', String(form.value.gas_metric))
 
-    // actualizar local
-    const index = billsList.value.findIndex(b => b.id === selectedBill.value!.id)
-    if (index !== -1) {
-      billsList.value[index].gas_metric = form.value.gas_metric
+    if (gasPic.value) {
+      formData.append('gas_pic', gasPic.value)
     }
 
-    selectedBill.value = null
-    form.value.gas_metric = 0
-    form.value.gas_pic = null
+    await billStore.updateBill(selectedBill.value.id, formData)
 
+    await billStore.fetchBill()
+
+    const updatedBill = billStore.Bills.find(
+      (bill) => bill.id === selectedBill.value?.id,
+    )
+
+    if (updatedBill) {
+      selectedBill.value = updatedBill
+    }
+
+    alert('Factura actualizada correctamente')
+  } catch (error) {
+    console.error(error)
+    alert('Error al actualizar la factura')
   } finally {
     loading.value = false
   }
 }
+
+onMounted(async () => {
+  await billStore.fetchBill()
+})
 </script>
 
+
+
 <template>
-  <div class="grid md:grid-cols-2 gap-6 p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-    <!-- LISTA -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
-      <h2 class="font-bold mb-4 text-gray-800 dark:text-gray-100">Facturas</h2>
+    <!-- LISTADO -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
 
-      <input v-model="search" placeholder="Buscar por apto o usuario"
-        class="w-full mb-3 border rounded-xl px-3 py-2 dark:bg-gray-700" />
+      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
+        Facturas
+      </h2>
 
-      <div v-for="bill in filteredBills" :key="bill.id" @click="selectBill(bill)"
-        class="p-3 mb-2 rounded-xl cursor-pointer border hover:bg-gray-100 dark:hover:bg-gray-700"
-        :class="selectedBill?.id === bill.id ? 'bg-blue-100 dark:bg-blue-900' : ''">
-        <p class="font-medium">Factura #{{ bill.id }}</p>
-        <p class="text-sm">Apto: {{ bill.apartment.number }}</p>
-        <p class="text-sm">Usuario: {{ bill.user?.name || 'N/A' }}</p>
+      <input
+        v-model="search"
+        placeholder="Buscar por apartamento o factura"
+        class="w-full mb-4 border rounded-xl px-3 py-2 dark:bg-gray-700"
+      />
+
+      <div
+        v-if="filteredBills.length === 0"
+        class="text-center py-6 text-gray-500"
+      >
+        No hay facturas disponibles
       </div>
+
+      <div
+        v-for="bill in filteredBills"
+        :key="bill.id"
+        @click="selectBill(bill)"
+        class="border rounded-xl p-4 mb-3 cursor-pointer transition hover:bg-gray-100 dark:hover:bg-gray-700"
+        :class="
+          selectedBill?.id === bill.id
+            ? 'bg-blue-100 dark:bg-blue-900 border-blue-500'
+            : ''
+        "
+      >
+        <p class="font-semibold">
+          Factura #{{ bill.id }}
+        </p>
+
+        <p class="text-sm">
+          Apartamento:
+          {{ bill.apartment.number }}
+        </p>
+
+        <p class="text-sm">
+          Mes:
+          {{ bill.month }} {{ bill.year }}
+        </p>
+
+        <p class="text-sm">
+          Estado:
+          {{ bill.status }}
+        </p>
+
+        <p class="font-semibold mt-2">
+          ${{ bill.amount }}
+        </p>
+      </div>
+
     </div>
 
-    <!-- FORM -->
+    <!-- FORMULARIO -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
-      <h2 class="font-bold mb-4 text-gray-800 dark:text-gray-100">Actualizar Factura</h2>
 
-      <div v-if="selectedBill" class="space-y-4">
-        <p class="text-sm">Factura #{{ selectedBill.id }}</p>
+      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
+        Actualizar factura
+      </h2>
 
-        <input v-model.number="form.gas_metric" type="number" placeholder="Métrica de gas"
-          class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700" />
+      <div
+        v-if="selectedBill"
+        class="space-y-5"
+      >
 
-        <input type="file" accept="image/*" @change="handleFile"
-          class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700" />
+        <div class="border rounded-xl p-4">
 
-        <button @click="submitUpdate" :disabled="!isValid || loading" class="w-full py-2 rounded-xl text-white"
-          :class="isValid ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400'">
-          <span v-if="loading">Actualizando...</span>
-          <span v-else>Guardar cambios</span>
+          <p class="font-semibold">
+            Factura #{{ selectedBill.id }}
+          </p>
+
+          <p class="text-sm">
+            Apartamento:
+            {{ selectedBill.apartment.number }}
+          </p>
+
+          <p class="text-sm">
+            Mes:
+            {{ selectedBill.month }} {{ selectedBill.year }}
+          </p>
+
+          <p class="text-sm">
+            Estado:
+            {{ selectedBill.status }}
+          </p>
+
+        </div>
+
+        <div>
+
+          <label class="block mb-1 font-medium">
+            Nueva métrica de gas
+          </label>
+
+          <input
+            v-model.number="form.gas_metric"
+            type="number"
+            class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
+          />
+
+        </div>
+
+        <div>
+
+          <label class="block mb-1 font-medium">
+            Foto del medidor
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            @change="handleFile"
+            class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
+          />
+
+        </div>
+
+        <button
+          @click="submitUpdate"
+          :disabled="!isValid || loading"
+          class="w-full py-2 rounded-xl text-white"
+          :class="
+            isValid && !loading
+              ? 'bg-blue-500 hover:bg-blue-600'
+              : 'bg-gray-400'
+          "
+        >
+          <span v-if="loading">
+            Actualizando...
+          </span>
+
+          <span v-else>
+            Guardar cambios
+          </span>
         </button>
+
       </div>
 
-      <div v-else class="text-gray-500">Selecciona una factura</div>
+      <div
+        v-else
+        class="text-gray-500"
+      >
+        Selecciona una factura para actualizar.
+      </div>
+
     </div>
 
   </div>

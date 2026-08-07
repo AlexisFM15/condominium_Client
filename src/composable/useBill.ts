@@ -41,6 +41,13 @@ export function useBill() {
     return res
   }
 
+  const sendBills = async (id: number, data:FormData ) => {
+    loading.value = true
+    const res = await updateBillAPI(id, data)
+    loading.value = false
+    return res
+  }
+
   const deleteBills = async (id: idBillDTO) => {
     loading.value = true
     const res = await deleteBillAPI(id)
@@ -61,6 +68,7 @@ export function useBill() {
     createBill,
     updateBills,
     deleteBills,
+    sendBills,
     payBillsOn,
   }
 }

@@ -27,6 +27,11 @@ export const updateBillAPI = async (id: number, data: FormData) => {
   return res.data
 }
 
+export const sendBillAPI = async (id: number, data: FormData) => {
+  const res = await api.patch(`${Endpoints.bills}/send/${id}`, data)
+  return res.data
+}
+
 export const payBillAPI = async (id: number, data: payBillDTO) => {
   const res = await api.post(`${Endpoints.bills}/paybill/${id}`, data)
   return res.data

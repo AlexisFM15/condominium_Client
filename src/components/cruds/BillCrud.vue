@@ -46,6 +46,7 @@ const form = ref({
   month: '',
   apartmentId: 0,
   gas_metric: 0,
+  gas_total: 0,
   latefee: 0,
   lateFeeStatus: false,
 })
@@ -106,16 +107,17 @@ const openCreate = () => {
   selectedId.value = null
 
   form.value = {
-    amount: 0,
-    status: 'Pendiente',
-    due_date: '',
-    year: new Date().getFullYear().toString(),
-    month: '',
-    apartmentId: 0,
-    gas_metric: 0,
-    latefee: 0,
-    lateFeeStatus: false,
-  }
+  amount: 0,
+  status: 'Pendiente',
+  due_date: '',
+  year: new Date().getFullYear().toString(),
+  month: '',
+  apartmentId: 0,
+  gas_metric: 0,
+  gas_total: 0,
+  latefee: 0,
+  lateFeeStatus: false,
+}
 
   showModal.value = true
 }
@@ -125,17 +127,20 @@ const openEdit = (bill: BillDTO) => {
   selectedId.value = bill.id ?? null
 
   form.value = {
-    amount: bill.amount,
-    status: bill.status,
-    due_date: bill.due_date ? new Date(bill.due_date).toISOString().split('T')[0] : '',
-    year: bill.year,
-    month: bill.month,
-    gas_pic: bill.gas_pic,
-    apartmentId: bill.apartment?.id ?? 0,
-    gas_metric: bill.gas_metric,
-    latefee: bill.latefee ?? 0,
-    lateFeeStatus: bill.lateFeeStatus ?? false,
-  }
+  amount: bill.amount,
+  status: bill.status,
+  due_date: bill.due_date
+    ? new Date(bill.due_date).toISOString().split('T')[0]
+    : '',
+  year: bill.year,
+  month: bill.month,
+  gas_pic: bill.gas_pic,
+  apartmentId: bill.apartment?.id ?? 0,
+  gas_metric: bill.gas_metric,
+  gas_total: bill.gas_total ?? 0,
+  latefee: bill.latefee ?? 0,
+  lateFeeStatus: bill.lateFeeStatus ?? false,
+}
 
   showModal.value = true
 }
@@ -158,6 +163,7 @@ const save = async () => {
   formData.append('month', form.value.month)
   formData.append('apartmentId', form.value.apartmentId.toString())
   formData.append('gas_metric', form.value.gas_metric.toString())
+  formData.append('gas_total', form.value.gas_total.toString())
   formData.append('latefee', form.value.latefee.toString())
   formData.append('lateFeeStatus', String(form.value.lateFeeStatus))
 
@@ -413,7 +419,15 @@ onMounted(async () => {
               class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
             />
           </div>
+<div>
+  <label class="block mb-1 font-medium"> Total Gas </label>
 
+  <input
+    v-model.number="form.gas_total"
+    type="number"
+    class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
+  />
+</div>
           <div>
             <label class="block mb-1 font-medium"> Mora </label>
 
