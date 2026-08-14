@@ -25,3 +25,8 @@ export const updatePollAPI = async (data: updatePollDTO) => {
   const res = await api.patch(`${Endpoints.polls}/${data.id}`, data)
   return res.data
 }
+
+export const getOpenPollAPI = async () => {
+  const res = await api.get(`${Endpoints.polls}/open`)
+  return res.data
+}

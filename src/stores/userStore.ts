@@ -1,3 +1,4 @@
+import { getDashboardAPI } from '@/api/user'
 import { useUser } from '@/composable/useUser'
 import type { createUserDTO, idUserDTO, updateUserDTO, userDTO } from '@/typings/user'
 import { defineStore } from 'pinia'
@@ -5,6 +6,7 @@ import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<userDTO[]>([])
+  const dashboard = ref()
 
   const { getUserss, getOneUser, createUser, updateUsers, deleteUsers } = useUser()
 
@@ -31,5 +33,11 @@ export const useUserStore = defineStore('user', () => {
     await deleteUsers(id)
     users.value = users.value.filter((user) => user.id !== id.id)
   }
-  return { users, fetchUser, getOne, createUserS, updateUser, deleteUser }
+
+  const getDashboard = async () => {
+    dashboard.value = await getDashboardAPI()
+    console.log(dashboard.value)
+  }
+
+  return { users, dashboard, fetchUser, getOne, createUserS, updateUser, deleteUser, getDashboard }
 })

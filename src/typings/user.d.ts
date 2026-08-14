@@ -4,9 +4,9 @@ export interface createUserDTO {
   lastname: string
   phone: string
   email: string
-  password: string
   role: string
-  apartmentId: number
+  balance: number
+  apartmentId?: number
 }
 
 export interface updateUserDTO {
@@ -15,9 +15,9 @@ export interface updateUserDTO {
   lastname?: string
   phone?: string
   email?: string
-  password?: string
   role?: string
-  apartmentId: number
+  balance?: number
+  apartmentId?: number
 }
 
 export interface idUserDTO {
@@ -30,7 +30,16 @@ export interface userDTO {
   lastname: string
   phone: string
   email: string
+  balance: number
   password: string
   role: string
-  apartmentId: number
+  apartment: {
+    id: number
+    number: number
+    occupancyType: string
+    rent: number
+    lastGasMetric: number
+    buildingId: number
+    serviceCost: number
+  }
 }

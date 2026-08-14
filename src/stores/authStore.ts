@@ -1,28 +1,61 @@
-import { loginAPI, logoutAPI } from '@/api/auth'
+import { loginAPI, logoutAPI, getMeAPI } from '@/api/auth'
 import { defineStore } from 'pinia'
 import type { login } from '@/typings/auth'
 import { ref } from 'vue'
+import type { userDTO } from '@/typings/user'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
+  const user = ref<userDTO | null>(null)
+  const message = ref<string>('')
+  const showWelcomeModal = ref(false)
 
   const setAccessToken = (token: string) => {
     accessToken.value = token
   }
 
-  const login = async (credencials: login) => {
-    const user = await loginAPI(credencials)
-    console.log(user)
-    if (user.token) {
-      setAccessToken(user.token)
-      localStorage.setItem('accessToken', user.token)
+  const login = async (credentials: login) => {
+    const res = await loginAPI(credentials)
+
+    if (res.data.data) {
+      console.log(res)
+      const { token, user: userData } = res.data.data
+
+      setAccessToken(token)
+      localStorage.setItem('accessToken', token)
+
+      user.value = userData
+
+      if (userData.defaultPassword) {
+        showWelcomeModal.value = true
+      }
+    }
+
+    message.value = res.data.message
+  }
+
+  const getMe = async () => {
+  try {
+    const res = await getMeAPI()
+    user.value = res
+    return res
+  } catch (error) {
+    console.error(error)
+    user.value = null
+    throw error
+  }
+}
+
+  const logout = async () => {
+    try {
+      await logoutAPI()
+      localStorage.removeItem('accessToken')
+      accessToken.value = null
+      user.value = null
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  const logout = async () => {
-    await logoutAPI()
-    localStorage.setItem('accessToken', '')
-  }
-
-  return { login, logout }
+  return { login, logout, getMe, user, message, showWelcomeModal }
 })

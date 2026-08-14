@@ -27,4 +27,5 @@ export interface CondominiumDTO {
   latefee_amount: number
   time_limit_days: number
   invoicesDate: number
+  promo: number
 }

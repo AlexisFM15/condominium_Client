@@ -5,6 +5,7 @@ export interface createApartmentDTO {
   rent: number
   lastGasMetric: number
   buildingId: number
+  serviceCost: number
   userId: string
 }
 
@@ -15,6 +16,7 @@ export interface updateApartmentDTO {
   rent?: number
   lastGasMetric?: number
   buildingId?: number
+  serviceCost?: number
   userId?: string
 }
 
@@ -28,6 +30,7 @@ export interface ApartmentDTO {
   occupancyType: string
   rent: number
   lastGasMetric: number
-  buildingId: number
-  userId: string
+  serviceCost?: number
+  building?: { id: number; name }
+  user?: { id: string; name: string; lastname: string }
 }

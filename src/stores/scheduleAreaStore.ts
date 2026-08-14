@@ -28,8 +28,8 @@ export const useScheduleAreaStore = defineStore('scheduleArea', () => {
   }
 
   const createScheduleAreaS = async (data: createScheduleAreaDTO) => {
-    await createScheduleArea(data)
-    ScheduleAreas.value.push({ ...data })
+    const reservations = await createScheduleArea(data)
+    ScheduleAreas.value.push(reservations)
   }
 
   const updateScheduleArea = async (data: updateScheduleAreaDTO) => {
@@ -40,6 +40,7 @@ export const useScheduleAreaStore = defineStore('scheduleArea', () => {
 
   const deleteScheduleArea = async (id: idScheduleAreaDTO) => {
     await deleteScheduleAreas(id)
+    fetchScheduleArea()
   }
   return {
     ScheduleAreas,

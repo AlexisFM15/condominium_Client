@@ -3,7 +3,7 @@ export interface createMovementDTO {
   type: string
   description: string
   amount: number
-  date: date
+  date: Date
   monthlyBalanceId: number
 }
 
@@ -12,7 +12,7 @@ export interface updateMovementDTO {
   type?: string
   description?: string
   amount?: number
-  date?: date
+  date?: Date
   monthlyBalanceId?: number
 }
 
@@ -25,6 +25,13 @@ export interface MovementDTO {
   type: string
   description: string
   amount: number
-  date: date
-  monthlyBalanceId: number
+  date: Date,
+  monthly_balance:{
+  id: number
+  income: number
+  expense: number
+  year: string
+  month: string
+  total: number
+  }
 }

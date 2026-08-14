@@ -16,6 +16,7 @@ export const useMovementStore = defineStore('movement', () => {
 
   const fetchMovement = async () => {
     Movements.value = await getMovementss()
+    console.log(Movements.value)
   }
 
   const getOne = async (id: idMovementDTO) => {

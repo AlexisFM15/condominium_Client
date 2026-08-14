@@ -42,3 +42,8 @@ export interface PaymentDTO {
   payment_date: date
   paymentType: string
 }
+
+export interface payBillDTO {
+  reference: string
+  payment_method: string
+}

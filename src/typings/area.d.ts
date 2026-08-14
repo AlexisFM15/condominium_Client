@@ -20,5 +20,12 @@ export interface AreaDTO {
   id?: number
   name: string
   description: string
-  condominiumId: number
+  condominium: {
+    id: number
+    name: string
+    description: string
+    latefee_amount: number
+    time_limit_days: number
+    invoicesDate: number
+  }
 }

@@ -1,7 +1,5 @@
 export interface createVoteDTO {
-  id?: number
   vote: string
-  userId: string
   pollId: number
 }
 

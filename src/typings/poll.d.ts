@@ -1,17 +1,21 @@
 export interface createPollDTO {
   id?: number
   description: string
+  title: string
   expires_at: date
-  poll_result?: number
+  votesFor: number
+  votesAgainst: number
   status: string
   userId: string
 }
 
 export interface updatePollDTO {
   id?: number
+  title?: string
   description?: string
   expires_at?: date
-  poll_result?: number
+  votesFor?: number
+  votesAgainst?: number
   status?: string
   userId?: string
 }
@@ -22,9 +26,11 @@ export interface idPollDTO {
 
 export interface PollDTO {
   id?: number
+  title?: string
   description: string
   expires_at: date
-  poll_result?: number
+  votesFor: number
+  votesAgainst: number
   status: string
   userId: string
 }
