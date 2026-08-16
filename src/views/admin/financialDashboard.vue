@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 
 import { useMonthlyBalanceStore } from '../../stores/monthlyBalanceStore'
 import { useMovementStore } from '../../stores/movementStore'
-import { MonthlyBalanceDTO } from '../../typings/monthlyBalance'
+import type { MonthlyBalanceDTO } from '../../typings/monthlyBalance'
 import MovementCrud from '../../components/cruds/movementCrud.vue'
 import MonthlyBalanceCrud from '../../components/cruds/monthlyBalanceCrud.vue'
 

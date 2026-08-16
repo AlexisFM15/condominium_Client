@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { MonthlyBalanceDTO } from '../../typings/monthlyBalance';
+import type { MonthlyBalanceDTO } from '../../typings/monthlyBalance';
 import { useMonthlyBalanceStore } from '../../stores/monthlyBalanceStore';
 
 

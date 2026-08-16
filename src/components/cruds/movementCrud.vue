@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { createMovementDTO, MovementDTO } from '../../typings/movement';
+import type { createMovementDTO, MovementDTO } from '../../typings/movement';
 
-import { MonthlyBalanceDTO } from '../../typings/monthlyBalance';
+import type { MonthlyBalanceDTO } from '../../typings/monthlyBalance';
 
 import {useMovementStore} from '../../stores/movementStore'
 
