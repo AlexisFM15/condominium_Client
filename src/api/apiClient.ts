@@ -22,7 +22,7 @@ export const Endpoints = {
 }
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3200',
+  baseURL: 'http://142.93.61.27:3200',
   withCredentials: true,
 })
 
