@@ -19,6 +19,7 @@ export const Endpoints = {
   votes: '/votes',
   dashboard: '/dashboard',
   incidencias: '/incidencias',
+  resetPassword: '/users/reset-password',
 }
 
 export const api = axios.create({

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Sidebar from '../partials/Sidebar.vue'
 import Header from '../partials/Header.vue'
+import WelcomeModal from '@/components/welcomeModal.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const sidebarOpen = ref(true)

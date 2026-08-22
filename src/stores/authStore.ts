@@ -14,33 +14,32 @@ export const useAuthStore = defineStore('auth', () => {
     accessToken.value = token
   }
 
-  const login = async (credentials: login) => {
-    const res = await loginAPI(credentials)
+ const login = async (credentials: login) => {
+  const res = await loginAPI(credentials)
 
-    if (res.data.data) {
-      console.log(res)
-      const { token, user: userData } = res.data.data
+  if (res.data.token) {
+    setAccessToken(res.data.token)
+    localStorage.setItem('accessToken', res.data.token)
 
-      setAccessToken(token)
-      localStorage.setItem('accessToken', token)
+    const me = await getMe()
 
-      user.value = userData
+    console.log('ME completo:', me)
 
-      if (userData.defaultPassword) {
-        showWelcomeModal.value = true
-      }
+    if (me?.defaultPassword) {
+      showWelcomeModal.value = true
     }
-
-    message.value = res.data.message
   }
+
+  message.value = res.data.message
+}
 
   const getMe = async () => {
   try {
     const res = await getMeAPI()
-    user.value = res
-    return res
+    user.value = res.user
+    return res.user
   } catch (error) {
-    console.error(error)
+    console.error(`Error detectado > ${error}`)
     user.value = null
     throw error
   }

@@ -2,8 +2,8 @@ import type { login } from '@/typings/auth'
 import { api, Endpoints } from './apiClient'
 
 interface response {
-  data: []
   message: string
+  token: string
 }
 
 export const loginAPI = async (data: login) => {

@@ -30,3 +30,8 @@ export const getDashboardAPI = async () => {
   const res = await api.get(Endpoints.dashboard)
   return res.data
 }
+
+export const resetPasswordAPI = async (newPassword: string) => {
+  const res = await api.patch(Endpoints.resetPassword, { newPassword })
+  return res.data
+}
