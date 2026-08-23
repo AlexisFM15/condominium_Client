@@ -8,8 +8,6 @@ import { useUserStore } from '@/stores/userStore'
 
 const useUser = useUserStore()
 
-const incidents = []
-
 computed(() => console.log(useUser.dashboard))
 
 onMounted(async () => {
