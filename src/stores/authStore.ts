@@ -13,31 +13,24 @@ export const useAuthStore = defineStore('auth', () => {
   const setAccessToken = (token: string) => {
     accessToken.value = token
   }
-  const login = async (credentials: login) => {
-    try {
-      const res = await loginAPI(credentials)
+const login = async (credentials: login) => {
+  try {
+    const res = await loginAPI(credentials)
 
-      console.log('LOGIN RESPONSE:', res.data)
-      console.log('LOGIN RESPONSE:', res.data.data.user.defaultPassword)
+    if (res.data.data?.accessToken) {
+      setAccessToken(res.data.data.accessToken)
+      localStorage.setItem('accessToken', res.data.data.accessToken)
 
-      if (res.data.data.accessToken) {
-        setAccessToken(res.data.data.accessToken)
-        localStorage.setItem('accessToken', res.data.data.accessToken)
-
-        console.log('TOKEN GUARDADO:', localStorage.getItem('accessToken'))
-
-        if (res.data.data.user.defaultPassword === true) {
-          console.log('🔥 MOSTRANDO MODAL')
-          showWelcomeModal.value = true
-          console.log('showWelcomeModal:', showWelcomeModal.value)
-        }
+      if (res.data.data.user?.defaultPassword === true) {
+        showWelcomeModal.value = true
       }
-
-      message.value = res.data.message
-    } catch (error) {
-      console.error('❌ ERROR EN LOGIN:', error)
     }
+
+    message.value = res.data.message
+  } catch (error) {
+    console.error('❌ ERROR EN LOGIN:', error)
   }
+}
   const getMe = async () => {
     try {
       const res = await getMeAPI()
