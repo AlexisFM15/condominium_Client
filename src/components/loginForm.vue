@@ -1,12 +1,20 @@
 <template>
-  <div class="max-h-screen flex items-center justify-center">
-    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+  <div
+    class="min-h-screen w-full flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative"
+    style="background-image: url('/login.webp')"
+  >
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
+
+    <!-- Login -->
+    <div class="relative z-10 w-full max-w-md bg-white/95 p-8 rounded-2xl shadow-2xl">
       <h2 class="text-2xl font-bold text-center mb-6">Iniciar sesión</h2>
 
       <form @submit.prevent="handlerLogin" class="space-y-4">
         <!-- Email -->
         <div>
           <label class="block text-sm mb-1">Correo</label>
+
           <input
             v-model="credencials.email"
             type="email"
@@ -19,6 +27,7 @@
         <!-- Password -->
         <div>
           <label class="block text-sm mb-1">Contraseña</label>
+
           <input
             v-model="credencials.password"
             type="password"
@@ -29,8 +38,7 @@
         </div>
 
         <!-- Error -->
-
-        <p class="text-red-500 text-sm" v-if="authStore.message !== 'Access succeed'">
+        <p v-if="authStore.message !== 'Access succeed'" class="text-red-500 text-sm">
           {{ authStore.message }}
         </p>
 
@@ -39,12 +47,13 @@
           type="submit"
           class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
         >
-          <span>Entrar</span>
+          Entrar
         </button>
       </form>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import router from '@/router'
 import { useAuthStore } from '@/stores/authStore'
@@ -60,9 +69,9 @@ const authStore = useAuthStore()
 
 const handlerLogin = async () => {
   await authStore.login(credencials.value)
+
   if (authStore.message === 'Access succeed') {
     router.push('/')
   }
 }
 </script>
-<style></style>
