@@ -7,7 +7,17 @@ import { ref } from 'vue'
 export const useBillStore = defineStore('bill', () => {
   const Bills = ref<BillDTO[]>([])
 
-  const { getBillss, getOneBill, createBill, updateBills, deleteBills, payBillsOn, sendBills } = useBill()
+  const {
+    getBillss,
+    getOneBill,
+    createBill,
+    updateBills,
+    deleteBills,
+    payBillsOn,
+    sendBills,
+    getBillssPending,
+    getBillssDraft,
+  } = useBill()
 
   const fetchBill = async () => {
     Bills.value = await getBillss()
@@ -30,7 +40,7 @@ export const useBillStore = defineStore('bill', () => {
     await deleteBills(id)
   }
 
-const sendBill = async (id: number, data: FormData) => {
+  const sendBill = async (id: number, data: FormData) => {
     await sendBills(id, data)
     await fetchBill()
   }
@@ -38,5 +48,24 @@ const sendBill = async (id: number, data: FormData) => {
   const paybill = async (id: number, data: payBillDTO) => {
     await payBillsOn(id, data)
   }
-  return { Bills, fetchBill, getOne, createBillS, updateBill, deleteBill, paybill, sendBill }
+
+  const fetchBillPending = async () => {
+    Bills.value = await getBillssPending()
+  }
+
+  const fetchBillDraft = async () => {
+    Bills.value = await getBillssDraft()
+  }
+  return {
+    Bills,
+    fetchBill,
+    getOne,
+    createBillS,
+    updateBill,
+    deleteBill,
+    paybill,
+    sendBill,
+    fetchBillPending,
+    fetchBillDraft,
+  }
 })

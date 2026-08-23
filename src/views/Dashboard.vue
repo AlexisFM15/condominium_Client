@@ -14,6 +14,7 @@ computed(() => console.log(useUser.dashboard))
 
 onMounted(async () => {
   await useUser.getDashboard()
+  localStorage.setItem('dashboard', JSON.stringify(useUser.dashboard))
 })
 console.log(useUser.dashboard)
 </script>
@@ -54,7 +55,10 @@ console.log(useUser.dashboard)
 
         <!-- widget lateral -->
         <div class="col-span-12 lg:col-span-4 row-span-3 bg-white rounded-xl">
-          <ActivityWidget :incidents="incidents" :agendas="useUser.dashboard?.reservations" />
+          <ActivityWidget
+            :incidents="useUser.dashboard?.incidencias"
+            :agendas="useUser.dashboard?.reservations"
+          />
         </div>
       </div>
     </main>

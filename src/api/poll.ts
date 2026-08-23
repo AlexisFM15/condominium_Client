@@ -30,3 +30,9 @@ export const getOpenPollAPI = async () => {
   const res = await api.get(`${Endpoints.polls}/open`)
   return res.data
 }
+
+export const closePoll = async (id: number) => {
+  const response = await api.patch(`/polls/${id}/close`)
+
+  return response.data
+}

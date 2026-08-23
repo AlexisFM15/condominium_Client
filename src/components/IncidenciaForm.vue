@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useIncidenciaStore } from '@/stores/incidenciaStore'
 import { useCondominiumStore } from '@/stores/condominiumStore'
 import type { createIncidenciaDTO } from '@/typings/incidencia'
+import { useUserStore } from '@/stores/userStore'
 
 const incidenciaStore = useIncidenciaStore()
 const condominiumStore = useCondominiumStore()
+const useUser = useUserStore()
+// const dashboard = JSON.parse(localStorage.getItem('dashboard') || 'null')
 
-const condominiums = computed(() => condominiumStore.Condominiums)
+// const condominiums = computed(() => condominiumStore.Condominiums)
 
 const sent = ref(false)
 
@@ -21,7 +24,7 @@ const save = async () => {
   const payload: createIncidenciaDTO = {
     title: form.value.title,
     description: form.value.description,
-    condominiumId: Number(form.value.condominiumId),
+    condominiumId: useUser.dashboard?.building.condominium.id,
   }
 
   await incidenciaStore.createIncidenciaS(payload)
@@ -37,6 +40,7 @@ const save = async () => {
 }
 
 onMounted(async () => {
+  await useUser.getDashboard()
   await condominiumStore.fetchCondominium()
 })
 </script>
@@ -62,23 +66,12 @@ onMounted(async () => {
         rows="4"
         class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
       />
-
-      <select
-        v-model.number="form.condominiumId"
-        class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
-      >
-        <option :value="0">Seleccione un condominio</option>
-
-        <option v-for="condominium in condominiums" :key="condominium.id" :value="condominium.id">
-          {{ condominium.name }}
-        </option>
-      </select>
     </div>
 
     <div class="flex justify-end mt-6">
       <button
         @click="save"
-        :disabled="!form.title || !form.description || !form.condominiumId"
+        :disabled="!form.title || !form.description"
         class="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white px-4 py-2 rounded-xl"
       >
         Enviar

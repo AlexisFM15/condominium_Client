@@ -1,4 +1,6 @@
-export type IncidenciaEstado = 'abierta' | 'en_proceso' | 'resuelta'
+export type IncidenciaEstado = 'Pendiente' | 'En proceso' | 'Resuelta'
+
+export type IncidenciaPrioridad = 'Baja' | 'Media' | 'Alta' | 'Sin Definir'
 
 export interface createIncidenciaDTO {
   id?: number
@@ -23,6 +25,8 @@ export interface IncidenciaDTO {
   title: string
   description: string
   status: IncidenciaEstado
+  priority: IncidenciaPrioridad
+  fecha_registro: Date
   condominium: {
     id: number
     name: string

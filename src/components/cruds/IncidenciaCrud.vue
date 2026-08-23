@@ -80,7 +80,7 @@ const openCreate = () => {
     title: '',
     description: '',
     condominiumId: 0,
-    status: 'abierta',
+    status: 'Pendiente',
   }
 
   showModal.value = true
@@ -180,7 +180,11 @@ onMounted(async () => {
       </thead>
 
       <tbody>
-        <tr v-for="incidencia in paginated" :key="incidencia.id" class="border-b dark:border-gray-700">
+        <tr
+          v-for="incidencia in paginated"
+          :key="incidencia.id"
+          class="border-b dark:border-gray-700"
+        >
           <td class="px-3 py-2">
             {{ incidencia.title }}
           </td>
@@ -193,9 +197,9 @@ onMounted(async () => {
             <span
               class="px-2 py-1 rounded-lg text-xs font-semibold"
               :class="{
-                'bg-yellow-100 text-yellow-700': incidencia.status === 'abierta',
-                'bg-blue-100 text-blue-700': incidencia.status === 'en_proceso',
-                'bg-green-100 text-green-700': incidencia.status === 'resuelta',
+                'bg-yellow-100 text-yellow-700': incidencia.status === 'Pendiente',
+                'bg-blue-100 text-blue-700': incidencia.status === 'En proceso',
+                'bg-green-100 text-green-700': incidencia.status === 'Resuelta',
               }"
             >
               {{ incidencia.status }}
@@ -282,10 +286,10 @@ onMounted(async () => {
             v-model="form.status"
             class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
           >
-            <option value="abierta">Abierta</option>
-            <option value="en_proceso">En proceso</option>
-            <option value="resuelta">Resuelta</option>
-          </select>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Resuelta">Resuelta</option></select
+          >'
         </div>
 
         <div class="flex justify-end gap-2 mt-6">

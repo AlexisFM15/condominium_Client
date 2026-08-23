@@ -36,3 +36,13 @@ export const payBillAPI = async (id: number, data: payBillDTO) => {
   const res = await api.post(`${Endpoints.bills}/paybill/${id}`, data)
   return res.data
 }
+
+export const getBillsPendingAPI = async () => {
+  const res = await api.get(`${Endpoints.bills}/pending`)
+  return res.data
+}
+
+export const getBillsDraftAPI = async () => {
+  const res = await api.get(`${Endpoints.bills}/draft`)
+  return res.data
+}

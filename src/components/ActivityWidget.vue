@@ -8,7 +8,8 @@ type Incident = {
   id: number | string
   title: string
   createdAt: string | Date
-  status: 'open' | 'pending' | 'resolved'
+  fecha_registro: Date
+  status: 'En proceso' | 'Pendiente' | 'Resuelta'
 }
 
 const props = defineProps<{
@@ -43,9 +44,9 @@ const formatSchedule = (item: ScheduleAreaDTO) => {
 }
 
 const statusColor = {
-  open: 'bg-red-100 text-red-600',
-  pending: 'bg-yellow-100 text-yellow-600',
-  resolved: 'bg-green-100 text-green-600',
+  Resuelta: 'bg-red-100 text-red-600',
+  Pendiente: 'bg-yellow-100 text-yellow-600',
+  'En proceso': 'bg-green-100 text-green-600',
 }
 
 const incidents = computed(() => props.incidents)
@@ -96,7 +97,7 @@ const agendas = computed(() => props.agendas)
             </p>
 
             <span class="text-xs text-gray-400">
-              {{ timeAgo(item.createdAt) }}
+              {{ timeAgo(item.fecha_registro) }}
             </span>
           </div>
 

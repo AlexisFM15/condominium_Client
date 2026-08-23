@@ -24,10 +24,7 @@ const filteredBills = computed(() => {
   const text = search.value.toLowerCase()
 
   return bills.value.filter((bill) => {
-    return (
-      bill.apartment.number.toString().includes(text) ||
-      bill.id?.toString().includes(text)
-    )
+    return bill.apartment.number.toString().includes(text) || bill.id?.toString().includes(text)
   })
 })
 
@@ -59,19 +56,15 @@ const submitUpdate = async () => {
   try {
     const formData = new FormData()
 
-    formData.append('gas_metric', String(form.value.gas_metric))
+    formData.append('gasMetric', String(form.value.gas_metric))
 
     if (gasPic.value) {
       formData.append('gas_pic', gasPic.value)
     }
 
-    await billStore.updateBill(selectedBill.value.id, formData)
+    await billStore.sendBill(selectedBill.value.id, formData)
 
-    await billStore.fetchBill()
-
-    const updatedBill = billStore.Bills.find(
-      (bill) => bill.id === selectedBill.value?.id,
-    )
+    const updatedBill = billStore.Bills.find((bill) => bill.id === selectedBill.value?.id)
 
     if (updatedBill) {
       selectedBill.value = updatedBill
@@ -87,21 +80,15 @@ const submitUpdate = async () => {
 }
 
 onMounted(async () => {
-  await billStore.fetchBill()
+  await billStore.fetchBillDraft()
 })
 </script>
 
-
-
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
     <!-- LISTADO -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
-
-      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
-        Facturas
-      </h2>
+      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">Facturas</h2>
 
       <input
         v-model="search"
@@ -109,10 +96,7 @@ onMounted(async () => {
         class="w-full mb-4 border rounded-xl px-3 py-2 dark:bg-gray-700"
       />
 
-      <div
-        v-if="filteredBills.length === 0"
-        class="text-center py-6 text-gray-500"
-      >
+      <div v-if="filteredBills.length === 0" class="text-center py-6 text-gray-500">
         No hay facturas disponibles
       </div>
 
@@ -121,15 +105,9 @@ onMounted(async () => {
         :key="bill.id"
         @click="selectBill(bill)"
         class="border rounded-xl p-4 mb-3 cursor-pointer transition hover:bg-gray-100 dark:hover:bg-gray-700"
-        :class="
-          selectedBill?.id === bill.id
-            ? 'bg-blue-100 dark:bg-blue-900 border-blue-500'
-            : ''
-        "
+        :class="selectedBill?.id === bill.id ? 'bg-blue-100 dark:bg-blue-900 border-blue-500' : ''"
       >
-        <p class="font-semibold">
-          Factura #{{ bill.id }}
-        </p>
+        <p class="font-semibold">Factura #{{ bill.id }}</p>
 
         <p class="text-sm">
           Apartamento:
@@ -146,30 +124,17 @@ onMounted(async () => {
           {{ bill.status }}
         </p>
 
-        <p class="font-semibold mt-2">
-          ${{ bill.amount }}
-        </p>
+        <p class="font-semibold mt-2">${{ bill.amount }}</p>
       </div>
-
     </div>
 
     <!-- FORMULARIO -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">Actualizar factura</h2>
 
-      <h2 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
-        Actualizar factura
-      </h2>
-
-      <div
-        v-if="selectedBill"
-        class="space-y-5"
-      >
-
+      <div v-if="selectedBill" class="space-y-5">
         <div class="border rounded-xl p-4">
-
-          <p class="font-semibold">
-            Factura #{{ selectedBill.id }}
-          </p>
+          <p class="font-semibold">Factura #{{ selectedBill.id }}</p>
 
           <p class="text-sm">
             Apartamento:
@@ -185,28 +150,20 @@ onMounted(async () => {
             Estado:
             {{ selectedBill.status }}
           </p>
-
         </div>
 
         <div>
-
-          <label class="block mb-1 font-medium">
-            Nueva métrica de gas
-          </label>
+          <label class="block mb-1 font-medium"> Nueva métrica de gas </label>
 
           <input
             v-model.number="form.gas_metric"
             type="number"
             class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
           />
-
         </div>
 
         <div>
-
-          <label class="block mb-1 font-medium">
-            Foto del medidor
-          </label>
+          <label class="block mb-1 font-medium"> Foto del medidor </label>
 
           <input
             type="file"
@@ -214,38 +171,21 @@ onMounted(async () => {
             @change="handleFile"
             class="w-full border rounded-xl px-3 py-2 dark:bg-gray-700"
           />
-
         </div>
 
         <button
           @click="submitUpdate"
           :disabled="!isValid || loading"
           class="w-full py-2 rounded-xl text-white"
-          :class="
-            isValid && !loading
-              ? 'bg-blue-500 hover:bg-blue-600'
-              : 'bg-gray-400'
-          "
+          :class="isValid && !loading ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400'"
         >
-          <span v-if="loading">
-            Actualizando...
-          </span>
+          <span v-if="loading"> Actualizando... </span>
 
-          <span v-else>
-            Guardar cambios
-          </span>
+          <span v-else> Guardar cambios </span>
         </button>
-
       </div>
 
-      <div
-        v-else
-        class="text-gray-500"
-      >
-        Selecciona una factura para actualizar.
-      </div>
-
+      <div v-else class="text-gray-500">Selecciona una factura para actualizar.</div>
     </div>
-
   </div>
 </template>

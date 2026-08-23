@@ -1,4 +1,4 @@
-import { getOpenPollAPI } from '@/api/poll'
+import { closePoll, getOpenPollAPI } from '@/api/poll'
 import { usePoll } from '@/composable/usePoll'
 import type { createPollDTO, idPollDTO, updatePollDTO, PollDTO } from '@/typings/poll'
 import { defineStore } from 'pinia'
@@ -23,9 +23,13 @@ export const usePollStore = defineStore('poll', () => {
   }
 
   const updatePoll = async (data: updatePollDTO) => {
-    await updatePolls(data)
-    Polls.value = Polls.value.filter((Poll) => Poll.id !== data.id)
-    Polls.value.push({ ...data } as PollDTO)
+    const poll = await updatePolls(data)
+
+    const index = Polls.value.findIndex((item) => item.id === data.id)
+
+    if (index !== -1) {
+      Polls.value[index] = poll
+    }
   }
 
   const deletePoll = async (id: idPollDTO) => {
@@ -36,5 +40,26 @@ export const usePollStore = defineStore('poll', () => {
     Polls.value = await getOpenPollAPI()
     console.log(Polls)
   }
-  return { Polls, fetchPoll, getOne, createPollS, updatePoll, deletePoll, fetchOpenPoll }
+
+  const closePollS = async (id: number) => {
+    const poll = await closePoll(id)
+
+    const index = Polls.value.findIndex((item) => item.id === id)
+
+    if (index !== -1) {
+      Polls.value[index] = poll
+    }
+
+    return poll
+  }
+  return {
+    Polls,
+    fetchPoll,
+    getOne,
+    createPollS,
+    updatePoll,
+    deletePoll,
+    fetchOpenPoll,
+    closePollS,
+  }
 })
