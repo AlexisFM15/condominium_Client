@@ -43,3 +43,14 @@ export interface userDTO {
     serviceCost: number
   }
 }
+export interface userLoginResponse {
+  id?: string
+  name: string
+  lastname: string
+  phone: string
+  email: string
+  balance: number
+  password: string
+  role: string
+  defaultPassword: boolean
+}
