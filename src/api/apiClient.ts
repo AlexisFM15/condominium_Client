@@ -23,7 +23,7 @@ export const Endpoints = {
 }
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3200',
+  baseURL: 'https://api.mateogenao.com',
   withCredentials: true,
 })
 
