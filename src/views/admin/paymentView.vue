@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
 import { usePaymentStore } from '@/stores/paymentStore'
 import type { PaymentDTO } from '@/typings/payment'
+import PaymentCrud from '@/components/cruds/PaymentCrud.vue'
 
 const usePayment = usePaymentStore()
 const data = ref<PaymentDTO[]>([])
@@ -36,4 +37,5 @@ onMounted(async () => {
 
 <template>
   <CrudTable :data="data" :columns="columns" @create="create" @update="update" @delete="remove" />
+    <PaymentCrud />
 </template>
