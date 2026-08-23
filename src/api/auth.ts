@@ -1,16 +1,19 @@
 import type { login } from '@/typings/auth'
 import { api, Endpoints } from './apiClient'
+import type { userLoginResponse } from '@/typings/user'
 
 interface response {
   message: string
-  token: string
+  data: {
+    accessToken: string
+    user: userLoginResponse
+  }
 }
 
 export const loginAPI = async (data: login) => {
   const res = await api.post<response>(Endpoints.login, data, {
     validateStatus: (status) => status < 500,
   })
-  console.log(res)
   return res
 }
 

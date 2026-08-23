@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useUserStore } from '@/stores/userStore'
+import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import { resetPasswordAPI } from '@/api/user'
 
-const userStore = useUserStore()
+const authStore = useAuthStore()
 
 const password = ref('')
 const confirmPassword = ref('')
@@ -39,7 +40,10 @@ const changePassword = async () => {
   loading.value = true
 
   try {
-    // await authStore.changeDefaultPassword(password.value)
+    await resetPasswordAPI(password.value)
+    authStore.showWelcomeModal = false
+  } catch (error) {
+    console.error(error)
   } finally {
     loading.value = false
   }
@@ -48,10 +52,10 @@ const changePassword = async () => {
 
 <template>
   <div
-    v-if="userStore.showWelcomeModal"
+    v-if="authStore.showWelcomeModal"
     class="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]"
   >
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-lg p-8">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl sh1adow-xl w-full max-w-lg p-8">
       <h1 class="text-3xl font-bold text-center">Bienvenido</h1>
 
       <p class="text-center mt-4 text-gray-600 dark:text-gray-300">

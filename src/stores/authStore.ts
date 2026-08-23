@@ -13,37 +13,42 @@ export const useAuthStore = defineStore('auth', () => {
   const setAccessToken = (token: string) => {
     accessToken.value = token
   }
+  const login = async (credentials: login) => {
+    try {
+      const res = await loginAPI(credentials)
 
- const login = async (credentials: login) => {
-  const res = await loginAPI(credentials)
+      console.log('LOGIN RESPONSE:', res.data)
+      console.log('LOGIN RESPONSE:', res.data.data.user.defaultPassword)
 
-  if (res.data.token) {
-    setAccessToken(res.data.token)
-    localStorage.setItem('accessToken', res.data.token)
+      if (res.data.data.accessToken) {
+        setAccessToken(res.data.data.accessToken)
+        localStorage.setItem('accessToken', res.data.data.accessToken)
 
-    const me = await getMe()
+        console.log('TOKEN GUARDADO:', localStorage.getItem('accessToken'))
 
-    console.log('ME completo:', me)
+        if (res.data.data.user.defaultPassword === true) {
+          console.log('🔥 MOSTRANDO MODAL')
+          showWelcomeModal.value = true
+          console.log('showWelcomeModal:', showWelcomeModal.value)
+        }
+      }
 
-    if (me?.defaultPassword) {
-      showWelcomeModal.value = true
+      message.value = res.data.message
+    } catch (error) {
+      console.error('❌ ERROR EN LOGIN:', error)
     }
   }
-
-  message.value = res.data.message
-}
-
   const getMe = async () => {
-  try {
-    const res = await getMeAPI()
-    user.value = res.user
-    return res.user
-  } catch (error) {
-    console.error(`Error detectado > ${error}`)
-    user.value = null
-    throw error
+    try {
+      const res = await getMeAPI()
+      user.value = res.user
+      return res.user
+    } catch (error) {
+      console.error(`Error detectado > ${error}`)
+      user.value = null
+      throw error
+    }
   }
-}
 
   const logout = async () => {
     try {
