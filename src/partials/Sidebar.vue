@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import logo from '../../public/logo.png'
+import { useAuthStore } from '@/stores/authStore'
 
 const route = useRoute()
 
@@ -16,6 +18,8 @@ const dashboardOpen = ref(false)
 const dashboardOpenOP = ref(false)
 
 const dashboardOpenADM = ref(false)
+
+const authStore = useAuthStore()
 
 // 🔥 persistencia
 onMounted(() => {
@@ -41,6 +45,10 @@ const toggleCollapse = () => (sidebarCollapsed.value = !sidebarCollapsed.value)
 const toggleDashboard = () => (dashboardOpen.value = !dashboardOpen.value)
 const toggleDashboardOP = () => (dashboardOpenOP.value = !dashboardOpenOP.value)
 const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.value)
+
+onMounted(() => {
+  authStore.getMe()
+})
 </script>
 
 <template>
@@ -71,9 +79,21 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
   >
     <!-- HEADER -->
     <div class="flex items-center justify-between p-4">
-      <button @click="toggleCollapse" class="text-gray-500 hover:text-gray-800">☰</button>
-    </div>
+      <!-- LOGO -->
+      <img
+        :src="logo"
+        alt="Logo"
+        :class="sidebarCollapsed ? 'h-8 w-8 object-contain' : 'h-10 w-auto object-contain'"
+      />
 
+      <!-- BOTÓN COLAPSAR -->
+      <button
+        @click="toggleCollapse"
+        class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
+      >
+        ☰
+      </button>
+    </div>
     <!-- NAV -->
     <nav class="flex-1 px-2 overflow-auto">
       <!-- DASHBOARD -->
@@ -159,13 +179,13 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
               Reportar Incidencias
             </div>
           </router-link>
-
-
         </div>
       </div>
 
       <!-- DASHBOARD -->
-      <div>
+      <!-- MENÚ OP: OP y ADMIN -->
+
+      <div v-if="authStore.user?.role === 'Operador' || authStore.user?.role === 'Administrador'">
         <button
           @click="toggleDashboardOP"
           class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
@@ -251,7 +271,7 @@ const toggleDashboardADM = () => (dashboardOpenADM.value = !dashboardOpenADM.val
       </div>
 
       <!-- DASHBOARD Admin -->
-      <div>
+      <div v-if="authStore.user?.role === 'Administrador'">
         <button
           @click="toggleDashboardADM"
           class="w-full flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
