@@ -1,26 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import CrudTable from '@/components/crudTable.vue'
 import { useBuildingStore } from '@/stores/buildingStore'
 import type { BuildingDTO } from '@/typings/building'
 
 const useBuilding = useBuildingStore()
-const data = ref<BuildingDTO[]>([])
+const data = computed(() => useBuilding.Buildings)
 
 const columns = [
-  {
-    key: 'name',
-    label: 'Edificio',
-  },
-  {
-    key: 'description',
-    label: 'Descripción',
-  },
-  {
-    key: 'serviceCost',
-    label: 'Costo Servicio',
-    type: 'number',
-  },
+  { key: 'name', label: 'Edificio' },
+  { key: 'description', label: 'Descripción' },
+  { key: 'serviceCost', label: 'Costo Servicio', type: 'number' },
   {
     key: 'condominiumId',
     label: 'Condominio',
@@ -46,7 +36,6 @@ const remove = async (item: any) => {
 
 onMounted(async () => {
   await useBuilding.fetchBuilding()
-  data.value = useBuilding.Buildings
 })
 </script>
 

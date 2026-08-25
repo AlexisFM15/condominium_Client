@@ -45,9 +45,9 @@ onMounted(async () => {
     </div>
 
     <Calendar
-      :reservations="useReservations.ScheduleAreas"
-      :selectedArea="selectedArea"
-      :user="user.user.user?.id"
-    />
+  :reservations="useReservations.ScheduleAreas"
+  :selectedArea="selectedArea"
+  :user="user.user?.id ?? ''"
+/>
   </div>
 </template>

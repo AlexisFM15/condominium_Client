@@ -95,6 +95,11 @@ const nextMonth = () =>
 const openModal = (day: any) => {
   if (day.status === 'parcial') return
 
+  if (!props.selectedArea) {
+    alert('Selecciona un área primero')
+    return
+  }
+
   selectedDay.value = day
   modalOpen.value = true
 }
@@ -106,6 +111,7 @@ const addSeconds = (time: string) => {
 // save reservation
 const addReservation = (data: any) => {
   const dateStr = selectedDay.value.date.toISOString().split('T')[0]
+   console.log('selectedArea:', props.selectedArea, typeof props.selectedArea)
 
 
   const newReservations = {

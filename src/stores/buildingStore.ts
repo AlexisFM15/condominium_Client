@@ -24,17 +24,17 @@ export const useBuildingStore = defineStore('building', () => {
 
   const createBuildingS = async (data: createBuildingDTO) => {
     await createBuilding(data)
-    Buildings.value.push({ ...data })
+    await fetchBuilding()
   }
 
   const updateBuilding = async (data: updateBuildingDTO) => {
     await updateBuildings(data)
-    Buildings.value = Buildings.value.filter((Building) => Building.id !== data.id)
-    Buildings.value.push({ ...data } as BuildingDTO)
+    await fetchBuilding()
   }
 
   const deleteBuilding = async (id: idBuildingDTO) => {
     await deleteBuildings(id)
+    await fetchBuilding()
   }
   return { Buildings, fetchBuilding, getOne, createBuildingS, updateBuilding, deleteBuilding }
 })

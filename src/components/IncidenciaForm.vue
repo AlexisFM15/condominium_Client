@@ -21,10 +21,17 @@ const form = ref({
 })
 
 const save = async () => {
+  const condominiumId = useUser.dashboard?.building?.condominium?.id
+
+  if (!condominiumId) {
+    alert('Cargando datos, intenta de nuevo en un momento')
+    return
+  }
+
   const payload: createIncidenciaDTO = {
     title: form.value.title,
     description: form.value.description,
-    condominiumId: useUser.dashboard?.building.condominium.id,
+    condominiumId,
   }
 
   await incidenciaStore.createIncidenciaS(payload)
@@ -39,9 +46,12 @@ const save = async () => {
   setTimeout(() => (sent.value = false), 3000)
 }
 
+
 onMounted(async () => {
+   console.log('MONTADO - antes de getDashboard')
   await useUser.getDashboard()
   await condominiumStore.fetchCondominium()
+   console.log('MONTADO - despues de getDashboard, valor:', useUser.dashboard)
 })
 </script>
 
